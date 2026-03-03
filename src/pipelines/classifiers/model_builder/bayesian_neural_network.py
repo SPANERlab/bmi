@@ -58,7 +58,7 @@ class BayesianNeuralNetwork(ModelBuilderBase):
         self.backbone.eval()
 
         # Free GPU memory within fold preventing leaks
-        delattr(self.network, "model_")
+        del self.network.model_
         torch.cuda.empty_cache()
 
         # Extract features from backbone
