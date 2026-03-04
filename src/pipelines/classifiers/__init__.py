@@ -8,7 +8,7 @@ from .model_builder import (
     BayesianNeuralNetwork,
 )
 from .subprocess import (
-    PyMCSubprocessEstimator,
+    PyMCSubprocessor,
 )
 
 __all__ = [
@@ -21,5 +21,5 @@ __all__ = [
     LinearGP.__name__,
     RBFGP.__name__,
     BayesianNeuralNetwork.__name__,
-    PyMCSubprocessEstimator.__name__,
+    PyMCSubprocessor.__name__,
 ]

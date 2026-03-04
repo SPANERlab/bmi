@@ -7,28 +7,28 @@ from abc import abstractmethod
 from sklearn.base import BaseEstimator, ClassifierMixin
 
 
-def _fit_worker(subprocess_estimator, X, y, queue):
+def _fit_worker(subprocessor, X, y, queue):
     try:
-        subprocess_estimator.estimator.fit(X, y)
-        subprocess_estimator.save_fitted_state()
+        subprocessor.estimator.fit(X, y)
+        subprocessor.save_fitted_state()
         queue.put(("ok", None))
     except Exception as e:
         queue.put(("err", e))
 
 
-def _predict_worker(subprocess_estimator, X, queue):
+def _predict_worker(subprocessor, X, queue):
     try:
-        subprocess_estimator.load_fitted_state()
-        result = subprocess_estimator.estimator.predict(X)
+        subprocessor.load_fitted_state()
+        result = subprocessor.estimator.predict(X)
         queue.put(("ok", result))
     except Exception as e:
         queue.put(("err", e))
 
 
-def _predict_proba_worker(subprocess_estimator, X, queue):
+def _predict_proba_worker(subprocessor, X, queue):
     try:
-        subprocess_estimator.load_fitted_state()
-        result = subprocess_estimator.estimator.predict_proba(X)
+        subprocessor.load_fitted_state()
+        result = subprocessor.estimator.predict_proba(X)
         queue.put(("ok", result))
     except Exception as e:
         queue.put(("err", e))
@@ -46,7 +46,7 @@ def _spawn_worker(target, args):
     return payload
 
 
-class SubprocessEstimator(ClassifierMixin, BaseEstimator):
+class Subprocessor(ClassifierMixin, BaseEstimator):
     def __init__(self, estimator, save_dir):
         self.estimator = estimator
         self.save_dir = save_dir

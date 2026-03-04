@@ -1,5 +1,5 @@
-from .pymc_subprocess_estimator import PyMCSubprocessEstimator
+from .pymc_subprocessor import PyMCSubprocessor
 
 __all__ = [
-    PyMCSubprocessEstimator.__name__,
+    PyMCSubprocessor.__name__,
 ]

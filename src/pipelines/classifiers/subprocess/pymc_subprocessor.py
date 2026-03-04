@@ -1,10 +1,10 @@
 import numpy as np
 from os import path
 from arviz import InferenceData
-from .subprocess_estimator import SubprocessEstimator
+from .subprocessor import Subprocessor
 
 
-class PyMCSubprocessEstimator(SubprocessEstimator):
+class PyMCSubprocessor(Subprocessor):
     def save_fitted_state(self):
         self.estimator.idata.to_netcdf(path.join(self._save_path, "idata.nc"))
         np.save(path.join(self._save_path, "X.npy"), self.estimator.X)
