@@ -1,3 +1,11 @@
+"""
+Spawn subprocess for estimator fitting with OS reclaiming all memory on finish.
+
+References
+----------
+.. [1] https://docs.python.org/3/library/multiprocessing.html
+"""
+
 import uuid
 import numpy as np
 import multiprocessing as mp
@@ -46,11 +54,11 @@ def _spawn_worker(target, args):
     return payload
 
 
-class Subprocessor(ClassifierMixin, BaseEstimator):
+class SubprocessorBase(ClassifierMixin, BaseEstimator):
     def __init__(self, estimator, save_dir):
         self.estimator = estimator
         self.save_dir = save_dir
-        self._save_path = None
+        self._save_path = self._make_save_path()
 
     def __sklearn_is_fitted__(self):
         return True
@@ -70,7 +78,6 @@ class Subprocessor(ClassifierMixin, BaseEstimator):
         pass
 
     def fit(self, X, y):
-        self._save_path = self._make_save_path()
         self.classes_ = np.unique(y)
         _spawn_worker(_fit_worker, (self, X, y))
         return self

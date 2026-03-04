@@ -8,7 +8,7 @@ References
 """
 
 import numpy as np
-from os import path, getenv, makedirs
+from os import path, getenv, makedirs, walk, remove
 from itertools import product
 from dotenv import load_dotenv
 from moabb.utils import set_download_dir
@@ -82,6 +82,16 @@ class Evaluation:
             # Execute pipelines evaluation
             result = evaluation.process(pipelines)
             result.to_csv(path.join(metrics_path, "scores.csv"), index=False)
+
+            # Post processing cleanup
+            self._cleanup_disk()
+
+    def _cleanup_disk(self):
+        """Remove data files accessed across subprocesses."""
+        for dirpath, _, filenames in walk(root_path):
+            for filename in filenames:
+                if filename in ("X.npy", "y.npy"):
+                    remove(path.join(dirpath, filename))
 
     def _datasets(self):
         yield (PhysionetMI, 10)

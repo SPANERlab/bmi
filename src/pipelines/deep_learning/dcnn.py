@@ -8,18 +8,21 @@ References
 
 from sklearn.pipeline import make_pipeline
 from ..pipeline_base import PipelineBase
-from ..classifiers import DeepCNN
+from ..classifiers import DeepConvNet, PyTorchSubprocessor
 
 
 class DCNN(PipelineBase):
     def build(self):
         return {
             self.__class__.__name__: make_pipeline(
-                DeepCNN(
-                    n_features=self.n_features,
-                    n_classes=self.n_classes,
-                    n_timepoints=self.n_timepoints,
-                    random_state=self.random_state,
-                ),
-            ),
+                PyTorchSubprocessor(
+                    estimator=DeepConvNet(
+                        n_features=self.n_features,
+                        n_classes=self.n_classes,
+                        n_timepoints=self.n_timepoints,
+                        random_state=self.random_state,
+                    ),
+                    save_dir=self.data_path
+                )
+            )
         }

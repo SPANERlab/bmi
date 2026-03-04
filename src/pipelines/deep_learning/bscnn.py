@@ -8,22 +8,32 @@ References
 
 from sklearn.pipeline import make_pipeline
 from ..pipeline_base import PipelineBase
-from ..classifiers import ShallowCNN, BayesianNeuralNetwork
+from ..classifiers import (
+    ShallowConvNet,
+    BayesianNeuralNetwork,
+    PyMCSubprocessor,
+    PyTorchSubprocessor,
+)
 
 
 class BSCNN(PipelineBase):
     def build(self):
         return {
             self.__class__.__name__: make_pipeline(
-                BayesianNeuralNetwork(
-                    data_path=self.data_path,
-                    random_state=self.random_state,
-                    network=ShallowCNN(
-                        n_features=self.n_features,
-                        n_classes=self.n_classes,
-                        n_timepoints=self.n_timepoints,
+                PyMCSubprocessor(
+                    estimator=BayesianNeuralNetwork(
                         random_state=self.random_state,
+                        network=PyTorchSubprocessor(
+                            estimator=ShallowConvNet(
+                                n_features=self.n_features,
+                                n_classes=self.n_classes,
+                                n_timepoints=self.n_timepoints,
+                                random_state=self.random_state,
+                            ),
+                            save_dir=self.data_path
+                        )
                     ),
+                    save_dir=self.data_path,
                 )
             )
         }

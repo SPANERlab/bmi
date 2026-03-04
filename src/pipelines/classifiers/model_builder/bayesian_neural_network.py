@@ -44,32 +44,25 @@ class BayesianNeuralNetwork(ModelBuilderBase):
             pm.Bernoulli(self.output_var, logit_p=logit, observed=y_obs)
 
     def fit(self, X, y):
-        # Train neural network on GPU
         self.network.fit(X, y)
-
-        # Copy backbone to CPU
-        modules = list(self.network.model_.module_.children())
-        self.backbone = torch.nn.Sequential(*modules[:-1]).cpu()
-        self.backbone.eval()
-
-        # Free GPU memory within fold preventing leaks
-        self.network.model_ = None
-        torch.cuda.empty_cache()
-
-        # Extract features from backbone
+        self._load_backbone()
         X_features = self._extract_features(X)
         X_features_scaled = self.scaler.fit_transform(X_features)
-
-        # Sample posterior of last layer parameters on GPU
         return super().fit(X_features_scaled, y)
+
+    def _load_backbone(self):
+        module = self.network.load_backbone()
+        self.backbone = torch.nn.Sequential(*list(module.children())[:-1])
+        self.backbone.eval()
 
     def _extract_features(self, X):
         X_tensor = torch.from_numpy(X).float()
         with torch.no_grad():
-            X_features = self.backbone(X_tensor).flatten(start_dim=1).numpy()
+            X_features = self.backbone(X_tensor).flatten(start_dim=1).numpy().copy()
         return X_features
 
     def predict_proba(self, X):
+        self._load_backbone()
         X_features = self._extract_features(X)
         X_features_scaled = self.scaler.transform(X_features)
         return super().predict_proba(X_features_scaled)
