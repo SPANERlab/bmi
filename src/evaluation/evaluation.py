@@ -94,8 +94,9 @@ class Evaluation:
                     remove(path.join(dirpath, filename))
 
     def _datasets(self):
-        yield (PhysionetMI, 10)
         yield (BNCI2014_001, 9)
+        yield (Stieger2021, 10)
+        yield (PhysionetMI, 10)
         yield (Lee2019_MI, 10)
         yield (Cho2017, 10)
         yield (Schirrmeister2017, 5)
@@ -105,7 +106,6 @@ class Evaluation:
         yield (Weibo2014, 5)
         yield (GrosseWentrup2009, 5)
         yield (Liu2024, 10)
-        yield (Stieger2021, 10)
 
     def _pipelines(self):
         yield CSPLDA
