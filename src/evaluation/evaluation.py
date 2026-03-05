@@ -42,13 +42,13 @@ class Evaluation:
     def run(self):
         for (DatasetCls, n_splits), PipelineCls in product(self._datasets(), self._pipelines()):
             # Make directories
-            metrics_path = path.join(
+            self.metrics_path = path.join(
                 self.data_path,
                 "metrics",
                 DatasetCls.__name__,
                 PipelineCls.__name__,
             )
-            makedirs(metrics_path, exist_ok=True)
+            makedirs(self.metrics_path, exist_ok=True)
 
             # Configure evaluation
             dataset = DatasetCls()
@@ -61,7 +61,7 @@ class Evaluation:
                 n_splits=n_splits,
                 codecarbon_config=dict(
                     save_to_file=True,
-                    output_dir=metrics_path,
+                    output_dir=self.metrics_path,
                     log_level="critical",
                     country_iso_code="USA",
                     region="washington",
@@ -71,7 +71,7 @@ class Evaluation:
             # Configure pipelines
             X, y, _ = paradigm.get_data(dataset, subjects=[1])
             pipeline = PipelineCls(
-                data_path=metrics_path,
+                data_path=self.metrics_path,
                 random_state=self.random_state,
                 n_features=X.shape[1],
                 n_classes=len(np.unique(y)),
@@ -81,14 +81,14 @@ class Evaluation:
 
             # Execute pipelines evaluation
             result = evaluation.process(pipelines)
-            result.to_csv(path.join(metrics_path, "scores.csv"), index=False)
+            result.to_csv(path.join(self.metrics_path, "scores.csv"), index=False)
 
             # Post processing cleanup
             self._cleanup_disk()
 
     def _cleanup_disk(self):
         """Remove data files accessed across subprocesses."""
-        for dirpath, _, filenames in walk(root_path):
+        for dirpath, _, filenames in walk(self.metrics_path):
             for filename in filenames:
                 if filename in ("X.npy", "y.npy"):
                     remove(path.join(dirpath, filename))

@@ -55,19 +55,19 @@ def _spawn_worker(target, args):
 
 
 class SubprocessorBase(ClassifierMixin, BaseEstimator):
-    def __init__(self, estimator, save_dir):
+    def __init__(self, estimator, root_dir):
         self.estimator = estimator
-        self.save_dir = save_dir
-        self._save_path = self._make_save_path()
+        self.root_dir = root_dir
+        self.save_dir = None
 
     def __sklearn_is_fitted__(self):
         return True
 
-    def _make_save_path(self):
+    def _make_save_dir(self):
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-        save_path = path.join(self.save_dir, self.__class__.__name__, timestamp)
-        makedirs(save_path, exist_ok=True)
-        return save_path
+        save_dir = path.join(self.root_dir, self.__class__.__name__, timestamp)
+        makedirs(save_dir, exist_ok=True)
+        return save_dir
 
     @abstractmethod
     def save_fitted_state(self):
@@ -78,6 +78,7 @@ class SubprocessorBase(ClassifierMixin, BaseEstimator):
         pass
 
     def fit(self, X, y):
+        self.save_dir = self._make_save_dir()
         self.classes_ = np.unique(y)
         _spawn_worker(_fit_worker, (self, X, y))
         return self

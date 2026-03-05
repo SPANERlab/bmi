@@ -22,7 +22,7 @@ class SCNN(PipelineBase):
                         n_timepoints=self.n_timepoints,
                         random_state=self.random_state,
                     ),
-                    save_dir=self.data_path
+                    root_dir=self.data_path
                 )
             )
         }

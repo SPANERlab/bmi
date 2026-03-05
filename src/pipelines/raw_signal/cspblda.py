@@ -28,7 +28,7 @@ class CSPBLDA(PipelineBase):
                     estimator=BayesianLDA(
                         random_state=self.random_state
                     ),
-                    save_dir=self.data_path,
+                    root_dir=self.data_path,
                 )
             )
         }

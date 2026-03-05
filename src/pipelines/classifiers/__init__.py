@@ -10,6 +10,8 @@ from .model_builder import (
 from .subprocess import (
     PyMCSubprocessor,
     PyTorchSubprocessor,
+    CuMLSubprocessor,
+    SklearnSubprocessor,
 )
 
 __all__ = [
@@ -24,4 +26,6 @@ __all__ = [
     BayesianNeuralNetwork.__name__,
     PyMCSubprocessor.__name__,
     PyTorchSubprocessor.__name__,
+    CuMLSubprocessor.__name__,
+    SklearnSubprocessor.__name__,
 ]

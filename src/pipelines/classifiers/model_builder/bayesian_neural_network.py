@@ -45,24 +45,19 @@ class BayesianNeuralNetwork(ModelBuilderBase):
 
     def fit(self, X, y):
         self.network.fit(X, y)
-        self._load_backbone()
         X_features = self._extract_features(X)
         X_features_scaled = self.scaler.fit_transform(X_features)
         return super().fit(X_features_scaled, y)
 
-    def _load_backbone(self):
-        module = self.network.load_backbone()
-        self.backbone = torch.nn.Sequential(*list(module.children())[:-1])
-        self.backbone.eval()
-
     def _extract_features(self, X):
+        module = self.network.load_backbone()
+        backbone = torch.nn.Sequential(*list(module.children())[:-1])
+        backbone.eval()
         X_tensor = torch.from_numpy(X).float()
         with torch.no_grad():
-            X_features = self.backbone(X_tensor).flatten(start_dim=1).numpy().copy()
-        return X_features
+            return backbone(X_tensor).flatten(start_dim=1).numpy().copy()
 
     def predict_proba(self, X):
-        self._load_backbone()
         X_features = self._extract_features(X)
         X_features_scaled = self.scaler.transform(X_features)
         return super().predict_proba(X_features_scaled)

@@ -12,7 +12,7 @@ from pyriemann.tangentspace import TangentSpace
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from ..pipeline_base import PipelineBase
-from ..classifiers import SVC
+from ..classifiers import SVC, CuMLSubprocessor
 
 
 class TSSVM(PipelineBase):
@@ -22,6 +22,14 @@ class TSSVM(PipelineBase):
                 Covariances(estimator="oas"),
                 TangentSpace(metric="riemann"),
                 StandardScaler(),
-                SVC(C=1.0, kernel="linear", probability=True, random_state=self.random_state),
+                CuMLSubprocessor(
+                    estimator=SVC(
+                        C=1.0,
+                        kernel="linear",
+                        probability=True,
+                        random_state=self.random_state
+                    ),
+                    root_dir=self.data_path
+                )
             )
         }
