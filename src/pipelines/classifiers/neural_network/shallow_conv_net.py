@@ -10,7 +10,7 @@ from braindecode.models import ShallowFBCSPNet
 from .neural_network_base import NeuralNetworkBase
 
 
-class ShallowCNN(NeuralNetworkBase):
+class ShallowConvNet(NeuralNetworkBase):
     def __init__(self, n_features=None, n_classes=None, n_timepoints=None, random_state=None):
         super().__init__(
             ShallowFBCSPNet(

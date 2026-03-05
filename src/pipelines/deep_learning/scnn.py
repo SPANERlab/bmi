@@ -8,18 +8,21 @@ References
 
 from sklearn.pipeline import make_pipeline
 from ..pipeline_base import PipelineBase
-from ..classifiers import ShallowCNN
+from ..classifiers import ShallowConvNet, PyTorchSubprocessor
 
 
 class SCNN(PipelineBase):
     def build(self):
         return {
             self.__class__.__name__: make_pipeline(
-                ShallowCNN(
-                    n_features=self.n_features,
-                    n_classes=self.n_classes,
-                    n_timepoints=self.n_timepoints,
-                    random_state=self.random_state,
-                ),
-            ),
+                PyTorchSubprocessor(
+                    estimator=ShallowConvNet(
+                        n_features=self.n_features,
+                        n_classes=self.n_classes,
+                        n_timepoints=self.n_timepoints,
+                        random_state=self.random_state,
+                    ),
+                    root_dir=self.data_path,
+                )
+            )
         }

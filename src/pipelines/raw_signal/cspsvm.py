@@ -12,7 +12,7 @@ from pyriemann.spatialfilters import CSP
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from ..pipeline_base import PipelineBase
-from ..classifiers import SVC
+from ..classifiers import SVC, CuMLSubprocessor
 
 
 class CSPSVM(PipelineBase):
@@ -22,6 +22,9 @@ class CSPSVM(PipelineBase):
                 Covariances(estimator="oas"),
                 CSP(nfilter=6),
                 StandardScaler(),
-                SVC(C=1.0, kernel="rbf", probability=True, random_state=self.random_state),
+                CuMLSubprocessor(
+                    estimator=SVC(C=1.0, kernel="rbf", probability=True, random_state=self.random_state),
+                    root_dir=self.data_path,
+                ),
             )
         }

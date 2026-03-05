@@ -11,7 +11,7 @@ from pyriemann.tangentspace import TangentSpace
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from ..pipeline_base import PipelineBase
-from ..classifiers import LogisticRegression
+from ..classifiers import LogisticRegression, CuMLSubprocessor
 
 
 class TSLR(PipelineBase):
@@ -21,6 +21,6 @@ class TSLR(PipelineBase):
                 Covariances(estimator="oas"),
                 TangentSpace(metric="riemann"),
                 StandardScaler(),
-                LogisticRegression(C=1.0, max_iter=1000),
+                CuMLSubprocessor(estimator=LogisticRegression(C=1.0, max_iter=1000), root_dir=self.data_path),
             )
         }
