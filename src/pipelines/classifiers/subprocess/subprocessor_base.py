@@ -6,7 +6,6 @@ References
 .. [1] https://docs.python.org/3/library/multiprocessing.html
 """
 
-import uuid
 import numpy as np
 import multiprocessing as mp
 from os import path, makedirs

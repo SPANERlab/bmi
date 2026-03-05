@@ -10,8 +10,6 @@ References
 import pandas as pd
 import numpy as np
 import pymc as pm
-from os import path
-from datetime import datetime
 from pymc_extras.model_builder import ModelBuilder
 from sklearn.base import BaseEstimator, ClassifierMixin
 

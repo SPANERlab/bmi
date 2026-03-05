@@ -25,10 +25,8 @@ class CSPBLDA(PipelineBase):
                 CSP(nfilter=6),
                 StandardScaler(),
                 PyMCSubprocessor(
-                    estimator=BayesianLDA(
-                        random_state=self.random_state
-                    ),
+                    estimator=BayesianLDA(random_state=self.random_state),
                     root_dir=self.data_path,
-                )
+                ),
             )
         }

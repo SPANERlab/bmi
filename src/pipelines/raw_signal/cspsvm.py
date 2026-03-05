@@ -23,13 +23,8 @@ class CSPSVM(PipelineBase):
                 CSP(nfilter=6),
                 StandardScaler(),
                 CuMLSubprocessor(
-                    estimator=SVC(
-                        C=1.0,
-                        kernel="rbf",
-                        probability=True,
-                        random_state=self.random_state
-                    ),
-                    root_dir=self.data_path
-                )
+                    estimator=SVC(C=1.0, kernel="rbf", probability=True, random_state=self.random_state),
+                    root_dir=self.data_path,
+                ),
             )
         }

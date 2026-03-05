@@ -21,11 +21,6 @@ class CSPGP(PipelineBase):
                 Covariances(estimator="oas"),
                 CSP(nfilter=6),
                 StandardScaler(),
-                PyMCSubprocessor(
-                    estimator=RBFGP(
-                        random_state=self.random_state
-                    ),
-                    root_dir=self.data_path
-                )
+                PyMCSubprocessor(estimator=RBFGP(random_state=self.random_state), root_dir=self.data_path),
             )
         }

@@ -21,12 +21,6 @@ class TSLR(PipelineBase):
                 Covariances(estimator="oas"),
                 TangentSpace(metric="riemann"),
                 StandardScaler(),
-                CuMLSubprocessor(
-                    estimator=LogisticRegression(
-                        C=1.0,
-                        max_iter=1000
-                    ),
-                    root_dir=self.data_path
-                )
+                CuMLSubprocessor(estimator=LogisticRegression(C=1.0, max_iter=1000), root_dir=self.data_path),
             )
         }
