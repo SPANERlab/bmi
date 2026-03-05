@@ -1,7 +1,7 @@
 from .pymc_subprocessor import PyMCSubprocessor
 from .pytorch_subprocessor import PyTorchSubprocessor
 from .cuml_subprocessor import CuMLSubprocessor
-from .sklearn_subprocess import SklearnSubprocessor
+from .sklearn_subprocessor import SklearnSubprocessor
 
 __all__ = [
     PyMCSubprocessor.__name__,
