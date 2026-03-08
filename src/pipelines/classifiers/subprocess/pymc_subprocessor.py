@@ -1,31 +1,27 @@
-import joblib
 import numpy as np
-from os import path
+from os import path, walk, remove
 from arviz import InferenceData
 from .subprocessor_base import SubprocessorBase
 
 
 class PyMCSubprocessor(SubprocessorBase):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._cleanup_disk()
+
+    def _cleanup_disk(self):
+        """Remove data files accessed across subprocesses within folds."""
+        for dirpath, _, filenames in walk(self.root_dir):
+            for filename in filenames:
+                if filename in ("X.npy", "y.npy"):
+                    remove(path.join(dirpath, filename))
+
     def save_fitted_state(self):
-        if hasattr(self.estimator, "scaler"):
-            joblib.dump(self.estimator.scaler, path.join(self.save_dir, "scaler.pkl"))
-
-        if hasattr(self.estimator, "network"):
-            np.save(
-                path.join(self.save_dir, "network_save_dir.npy"), np.array([self.estimator.network.save_dir])
-            )
-
         np.save(path.join(self.save_dir, "X.npy"), self.estimator.X)
         np.save(path.join(self.save_dir, "y.npy"), self.estimator.y)
         self.estimator.idata.to_netcdf(path.join(self.save_dir, "idata.nc"))
 
     def load_fitted_state(self):
-        if hasattr(self.estimator, "scaler"):
-            self.estimator.scaler = joblib.load(path.join(self.save_dir, "scaler.pkl"))
-
-        if hasattr(self.estimator, "network"):
-            self.estimator.network.save_dir = np.load(path.join(self.save_dir, "network_save_dir.npy"))[0]
-
         X = np.load(path.join(self.save_dir, "X.npy"))
         y = np.load(path.join(self.save_dir, "y.npy"))
         self.estimator.build_model(X, y)
