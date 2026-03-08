@@ -32,7 +32,9 @@ class LowRankPrior:
 
         w_raw = pm.Normal(f"{name}_raw", mu=0.0, sigma=1.0, shape=self.n_components)
         w_reduced = pt.dot(L, w_raw)
-        return pm.Deterministic(name, pt.dot(pt.as_tensor_variable(Vt.T), w_reduced) / np.sqrt(self.n_components))
+        return pm.Deterministic(
+            name, pt.dot(pt.as_tensor_variable(Vt.T), w_reduced) / np.sqrt(self.n_components)
+        )
 
 
 class BayesianLogisticRegression(ModelBuilderBase):
@@ -40,9 +42,11 @@ class BayesianLogisticRegression(ModelBuilderBase):
         with pm.Model() as self.model:
             X_obs = pm.Data("X_obs", X)
             y_obs = pm.Data("y_obs", y)
-            
+
             # Define priors
-            prior = LowRankPrior(n_components=self.model_config["n_components"], random_state=self.random_state)
+            prior = LowRankPrior(
+                n_components=self.model_config["n_components"], random_state=self.random_state
+            )
             w = prior.prior("w", X=np.array(X))
             b = pm.Normal("b", mu=self.model_config["b_mu"], sigma=self.model_config["b_sigma"])
 
