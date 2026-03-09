@@ -5,36 +5,14 @@ References
 ----------
 .. [1] https://doi.org/10.1007/978-0-387-84858-7_4
 .. [2] https://bayesiancomputationbook.com/markdown/chp_04.html#posterior-geometry-matters
-.. [3] https://www.pymc.io/projects/examples/en/latest/howto/model_builder.html
-.. [4] https://www.pymc.io/projects/extras/en/latest/generated/pymc_extras.model_builder.ModelBuilder.html
+.. [3] https://www.pymc.io/projects/examples/en/latest/statistical_rethinking_lectures/14-Correlated_Features.html#non-centered-prior
+.. [4] https://www.pymc.io/projects/examples/en/latest/howto/model_builder.html
+.. [5] https://www.pymc.io/projects/extras/en/latest/generated/pymc_extras.model_builder.ModelBuilder.html
 """
 
 import numpy as np
 import pymc as pm
-import pytensor.tensor as pt
-from sklearn.decomposition import TruncatedSVD
 from .model_builder_base import ModelBuilderBase
-
-
-class LowRankPrior:
-    def __init__(self, n_components, random_state):
-        self.n_components = n_components
-        self.random_state = random_state
-
-    def prior(self, name, X):
-        X_centered = X - X.mean(axis=0)
-        svd = TruncatedSVD(n_components=self.n_components, random_state=self.random_state)
-        X_reduced = svd.fit_transform(X_centered)
-        Vt = svd.components_
-
-        Kxx_reduced = (X_reduced.T @ X_reduced) / X_centered.shape[0]
-        L = pt.linalg.cholesky(pm.gp.util.stabilize(pt.as_tensor_variable(Kxx_reduced)))
-
-        w_raw = pm.Normal(f"{name}_raw", mu=0.0, sigma=1.0, shape=self.n_components)
-        w_reduced = pt.dot(L, w_raw)
-        return pm.Deterministic(
-            name, pt.dot(pt.as_tensor_variable(Vt.T), w_reduced) / np.sqrt(self.n_components)
-        )
 
 
 class BayesianLogisticRegression(ModelBuilderBase):
@@ -43,12 +21,12 @@ class BayesianLogisticRegression(ModelBuilderBase):
             X_obs = pm.Data("X_obs", X)
             y_obs = pm.Data("y_obs", y)
 
-            # Define priors
-            prior = LowRankPrior(
-                n_components=self.model_config["n_components"], random_state=self.random_state
-            )
-            w = prior.prior("w", X=np.array(X))
-            b = pm.Normal("b", mu=self.model_config["b_mu"], sigma=self.model_config["b_sigma"])
+            # Define priors with non-centered parameterization
+            w_sigma = 1 / np.sqrt(X.shape[1])
+            w_raw = pm.Normal("w_raw", mu=0.0, sigma=1.0, shape=X.shape[1])
+            w = pm.Deterministic("w", self.model_config["w_mu"] + w_sigma * w_raw)
+            b_raw = pm.Normal("b_raw", mu=0.0, sigma=1.0)
+            b = pm.Deterministic("b", self.model_config["b_mu"] + self.model_config["b_sigma"] * b_raw)
 
             # Define likelihood
             logit = pm.math.dot(X_obs, w) + b
@@ -57,7 +35,7 @@ class BayesianLogisticRegression(ModelBuilderBase):
     @staticmethod
     def get_default_model_config():
         return {
-            "b_mu": 0,
+            "w_mu": 0.0,
+            "b_mu": 0.0,
             "b_sigma": 1.0,
-            "n_components": 100,
         }
