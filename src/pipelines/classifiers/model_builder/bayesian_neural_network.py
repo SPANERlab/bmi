@@ -4,10 +4,11 @@ Build Bayesian neural network classifier.
 References
 ----------
 .. [1] http://probml.github.io/book2
-.. [2] https://bayesiancomputationbook.com/markdown/chp_04.html#posterior-geometry-matters
-.. [3] https://www.pymc.io/projects/examples/en/latest/variational_inference/bayesian_neural_network_advi.html
-.. [4] https://www.pymc.io/projects/examples/en/latest/howto/model_builder.html
-.. [5] https://www.pymc.io/projects/extras/en/latest/generated/pymc_extras.model_builder.ModelBuilder.html
+.. [2] https://www.pymc.io/projects/examples/en/latest/variational_inference/bayesian_neural_network_advi.html
+.. [3] https://bayesiancomputationbook.com/markdown/chp_04.html#posterior-geometry-matters
+.. [4] https://www.pymc.io/projects/examples/en/latest/statistical_rethinking_lectures/14-Correlated_Features.html#non-centered-prior
+.. [5] https://www.pymc.io/projects/examples/en/latest/howto/model_builder.html
+.. [6] https://www.pymc.io/projects/extras/en/latest/generated/pymc_extras.model_builder.ModelBuilder.html
 """
 
 import torch
@@ -31,9 +32,9 @@ class BayesianNeuralNetwork(ModelBuilderBase):
 
             # Define priors with non-centered parameterization
             w_sigma = 1 / np.sqrt(X.shape[1])
-            w_raw = pm.Normal("w_raw", mu=0, sigma=1, shape=X.shape[1])
+            w_raw = pm.Normal("w_raw", mu=0.0, sigma=1.0, shape=X.shape[1])
             w = pm.Deterministic("w", self.model_config["w_mu"] + w_sigma * w_raw)
-            b_raw = pm.Normal("b_raw", mu=0, sigma=1)
+            b_raw = pm.Normal("b_raw", mu=0.0, sigma=1.0)
             b = pm.Deterministic("b", self.model_config["b_mu"] + self.model_config["b_sigma"] * b_raw)
 
             # Define likelihood
@@ -62,7 +63,7 @@ class BayesianNeuralNetwork(ModelBuilderBase):
     @staticmethod
     def get_default_model_config():
         return {
-            "w_mu": 0,
-            "b_mu": 0,
+            "w_mu": 0.0,
+            "b_mu": 0.0,
             "b_sigma": 1.0,
         }
