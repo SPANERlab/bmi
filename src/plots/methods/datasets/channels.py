@@ -30,11 +30,39 @@ from src.datasets import Liu2024
 
 class Channels:
     CHANNELS = (
-        "FC5", "FC3", "FC1", "FCz", "FC2", "FC4", "FC6",
-        "FCC5h", "FCC3h", "FFC1h", "FCC2h", "FCC4h", "FCC6h",
-        "C5", "C3", "C1", "Cz", "C2", "C4", "C6",
-        "CCP5h", "CCP3h", "CCP1h", "CCP2h", "CCP4h", "CCP6h",
-        "CP5", "CP3", "CP1", "CPz", "CP2", "CP4", "CP6",
+        "FC5",
+        "FC3",
+        "FC1",
+        "FCz",
+        "FC2",
+        "FC4",
+        "FC6",
+        "FCC5h",
+        "FCC3h",
+        "FFC1h",
+        "FCC2h",
+        "FCC4h",
+        "FCC6h",
+        "C5",
+        "C3",
+        "C1",
+        "Cz",
+        "C2",
+        "C4",
+        "C6",
+        "CCP5h",
+        "CCP3h",
+        "CCP1h",
+        "CCP2h",
+        "CCP4h",
+        "CCP6h",
+        "CP5",
+        "CP3",
+        "CP1",
+        "CPz",
+        "CP2",
+        "CP4",
+        "CP6",
     )
 
     def __init__(self):
@@ -73,12 +101,12 @@ class Channels:
     def _funcs(self):
         yield self._save_montage
         yield self._save_intersection
-            
+
     def _rename_channels(self, raw):
         orig_ch_names = raw.ch_names
         montage_name = "brainproducts-RNP-BA-128"
         std = mne.channels.make_standard_montage(montage_name)
-        rename_map = {str(i+1): name for i, name in enumerate(std.ch_names) if str(i+1) in orig_ch_names}
+        rename_map = {str(i + 1): name for i, name in enumerate(std.ch_names) if str(i + 1) in orig_ch_names}
         raw.rename_channels(rename_map)
         raw.set_montage(montage_name)
         return orig_ch_names
@@ -93,5 +121,8 @@ class Channels:
         intersection = set(raw.ch_names) & set(Channels.CHANNELS)
         df = pd.DataFrame(sorted(intersection, key=lambda ch: Channels.CHANNELS.index(ch)), columns=["ch"])
         if ch_names is not None:
-            df["orig"] = [ch_names[raw.ch_names.index(ch)] for ch in sorted(intersection, key=lambda ch: Channels.CHANNELS.index(ch))]
+            df["orig"] = [
+                ch_names[raw.ch_names.index(ch)]
+                for ch in sorted(intersection, key=lambda ch: Channels.CHANNELS.index(ch))
+            ]
         df.to_csv(f"{classname}-prod.csv", index=False)
