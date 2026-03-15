@@ -10,8 +10,10 @@ class PyMCSubprocessor(SubprocessorBase):
 
     def _cleanup_disk(self):
         """Remove data files accessed across subprocesses."""
-        remove(path.join(self.save_dir, "X.npy"))
-        remove(path.join(self.save_dir, "y.npy"))
+        for filename in ["X.npy", "y.npy"]:
+            filepath = path.join(self.save_dir, filename)
+            if path.exists(filepath):
+                remove(filepath)
 
     def _build_model(self, X, y):
         self.estimator.build_model(X, y)
