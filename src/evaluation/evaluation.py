@@ -27,9 +27,9 @@ from moabb.datasets import (
     Stieger2021,
 )
 from .configs import N_SPLITS, RESAMPLE, SESSIONS, CHANNELS
-from src.datasets import Liu2024
-from src.paradigm import MultiScoreLeftRightImagery
-from src.pipelines import CSPLDA, CSPSVM, TSLR, TSSVM, SCNN, DCNN, CSPBLDA, CSPGP, TSBLR, TSGP, BSCNN, BDCNN
+from ..datasets import Liu2024
+from ..paradigm import MultiScoreLeftRightImagery
+from ..pipelines import CSPLDA, CSPSVM, TSLR, TSSVM, SCNN, DCNN, CSPBLDA, CSPGP, TSBLR, TSGP, BSCNN, BDCNN
 
 
 class Evaluation:

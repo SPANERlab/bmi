@@ -11,7 +11,7 @@ from moabb.datasets import (
     GrosseWentrup2009,
     Stieger2021,
 )
-from src.datasets import Liu2024
+from ..datasets import Liu2024
 
 
 N_SPLITS = {

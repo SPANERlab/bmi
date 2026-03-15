@@ -3,12 +3,3 @@ from .bayesian_linear_discriminant_analysis import BayesianLinearDiscriminantAna
 from .bayesian_logistic_regression import BayesianLogisticRegression
 from .gaussian_process import LinearGP, RBFGP
 from .bayesian_neural_network import BayesianNeuralNetwork
-
-__all__ = [
-    ModelBuilderBase.__name__,
-    BayesianLinearDiscriminantAnalysis.__name__,
-    BayesianLogisticRegression.__name__,
-    LinearGP.__name__,
-    RBFGP.__name__,
-    BayesianNeuralNetwork.__name__,
-]
