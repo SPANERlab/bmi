@@ -9,7 +9,7 @@ class PyMCSubprocessor(SubprocessorBase):
         self._cleanup_disk()
 
     def _cleanup_disk(self):
-        """Remove data files accessed across subprocesses."""
+        """Remove data files accessed across subprocesses within folds."""
         if self.save_dir is None:
             return
         for filename in ["X.npy", "y.npy"]:
