@@ -4,8 +4,9 @@ Build Bayesian linear discriminant analysis classifier.
 References
 ----------
 .. [1] https://doi.org/10.1007/978-0-387-84858-7_4
-.. [2] https://www.pymc.io/projects/examples/en/latest/howto/model_builder.html
-.. [3] https://www.pymc.io/projects/extras/en/latest/generated/pymc_extras.model_builder.ModelBuilder.html
+.. [2] https://www.pymc.io/projects/examples/en/latest/mixture_models/gaussian_mixture_model.html
+.. [3] https://www.pymc.io/projects/examples/en/latest/howto/model_builder.html
+.. [4] https://www.pymc.io/projects/extras/en/latest/generated/pymc_extras.model_builder.ModelBuilder.html
 """
 
 import pymc as pm
