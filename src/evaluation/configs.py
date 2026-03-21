@@ -29,22 +29,7 @@ N_SPLITS = {
     GrosseWentrup2009: 5,
 }
 
-RESAMPLE = {
-    BNCI2014_001: 250,
-    Liu2024: 500,
-    Stieger2021: 1000,
-    PhysionetMI: 160,
-    Lee2019_MI: 1000,
-    Cho2017: 512,
-    Schirrmeister2017: 500,
-    Shin2017A: 200,
-    BNCI2014_004: 250,
-    Dreyer2023: 512,
-    Weibo2014: 200,
-    GrosseWentrup2009: 500,
-}
-
-SESSIONS = {Stieger2021: [1, 2, 3]}
+SESSIONS = {Stieger2021: [1, 2, 3, 4, 5]}
 
 # fmt: off
 CHANNELS = {
@@ -59,6 +44,6 @@ CHANNELS = {
     BNCI2014_004: ["C3", "Cz", "C4"],
     Dreyer2023: ["FC5", "FC3", "FC1", "FCz", "FC2", "FC4", "FC6", "C5", "C3", "C1", "Cz", "C2", "C4", "C6", "CP5", "CP3", "CP1", "CPz", "CP2", "CP4", "CP6"],
     Weibo2014: ["FC5", "FC3", "FC1", "FCz", "FC2", "FC4", "FC6", "C5", "C3", "C1", "Cz", "C2", "C4", "C6", "CP5", "CP3", "CP1", "CPz", "CP2", "CP4", "CP6"],
-    GrosseWentrup2009: ["FC5", "FC3", "FC1", "FC2", "FC4", "FC6", "FCC5h", "FCC3h", "FFC1h", "FCC2h", "FCC4h", "FCC6h", "C5", "C3", "C1", "Cz", "C2", "C4", "C6", "CCP5h", "CCP3h", "CCP1h", "CCP2h", "CCP4h", "CCP6h", "CP5", "CP3", "CP1", "CPz", "CP2", "CP4", "CP6"],
+    GrosseWentrup2009: ["6", "39", "7", "27", "59", "28", "103", "70", "66", "123", "91", "122", "41", "8", "40", "26", "58", "25", "57", "72", "105", "71", "90", "120", "89", "10", "43", "11", "54", "22", "55", "23"],
 }
 # fmt: on
