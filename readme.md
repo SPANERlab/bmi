@@ -81,3 +81,80 @@ ruff check /path/to/software
 ```
 
 ## R Guide
+
+### Conda setup
+
+```bash
+# Create environment
+conda create -n analysis -c conda-forge r-base
+
+# Install system dependencies
+conda install -c conda-forge \
+    fontconfig \
+    harfbuzz \
+    fribidi \
+    freetype \
+    libpng \
+    libtiff \
+    libjpeg-turbo \
+    zstd \
+    libgcc-ng \
+    compilers \
+    zlib \
+    pkg-config
+```
+
+#### Environment automation
+
+```bash
+# Create activation script
+mkdir -p $CONDA_PREFIX/etc/conda/activate.d
+cat > $CONDA_PREFIX/etc/conda/activate.d/r_env_vars.sh << 'EOF'
+export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=$CONDA_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
+export CPPFLAGS="-I$CONDA_PREFIX/include"
+export LDFLAGS="-L$CONDA_PREFIX/lib"
+EOF
+
+# Create deactivation script
+mkdir -p $CONDA_PREFIX/etc/conda/deactivate.d
+cat > $CONDA_PREFIX/etc/conda/deactivate.d/r_env_vars.sh << 'EOF'
+unset CPPFLAGS
+unset LDFLAGS
+export LD_LIBRARY_PATH=$(echo $LD_LIBRARY_PATH | sed "s|$CONDA_PREFIX/lib:||")
+export PKG_CONFIG_PATH=$(echo $PKG_CONFIG_PATH | sed "s|$CONDA_PREFIX/lib/pkgconfig:||")
+EOF
+```
+
+### Renv project
+
+```bash
+# Enter R shell
+R
+
+# Install renv
+install.packages("renv")
+
+# Create renv
+renv::init()
+
+# Install packages
+install.packages("tidyverse")
+
+# Save renv
+renv::snapshot()
+
+# Exit R shell
+q()
+
+## Recreate renv
+renv::restore()
+```
+
+### File format & linting
+
+```bash
+# Within R shell
+styler::style_dir("/path/to/software")
+lintr::lint_dir("/path/to/software")
+```
