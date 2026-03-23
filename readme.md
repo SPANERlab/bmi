@@ -1,31 +1,36 @@
 # Bayesian Motor Imagery (BMI)
 
-## Conda setup
+## Python Guide
+
+### Conda setup
 
 ```bash
 # Create environment
-conda create -n bmi python=3.12
+conda create -n evaluation python=3.12
 
 # Delete environment
-conda env remove -n bmi
+conda env remove -n evaluation
+
+# Clone environment
+conda create --name new_evaluation --clone evaluation
 
 # List environments
 conda env list
 
 # Activate environment
-conda activate bmi
+conda activate evaluation
 
 # Deactivate environment
 conda deactivate
 
 # Save environment
-conda env export > environment.yml
+conda env export > evaluation.yml
 
 # Recreate environment
-conda env create -f environment.yml
+conda env create -f evaluation.yml
 ```
 
-### GPU stack
+#### GPU stack
 
 ```bash
 # Create activation script
@@ -37,7 +42,7 @@ mkdir -p $CONDA_PREFIX/etc/conda/deactivate.d
 echo 'unset LD_LIBRARY_PATH' > $CONDA_PREFIX/etc/conda/deactivate.d/env_vars.sh
 ```
 
-## Environment variables
+### Environment variables
 
 Create `.env` file in root of git repository.
 
@@ -46,7 +51,7 @@ DATA_PATH=/path/to/data
 RANDOM_STATE=1
 ```
 
-## Background commands
+### Background commands
 
 ```bash
 # Start process
@@ -59,7 +64,7 @@ ps aux | grep "python -m path.to.command"
 pkill -u username -f "substring"
 ```
 
-## File format & linting
+### File format & linting
 
 ```bash
 # Format files
@@ -74,3 +79,5 @@ ruff check --fix /path/to/software
 # Fail if files not linted
 ruff check /path/to/software
 ```
+
+## R Guide
