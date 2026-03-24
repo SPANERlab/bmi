@@ -24,8 +24,16 @@ from moabb.datasets import (
     Weibo2014,
     GrosseWentrup2009,
     Stieger2021,
+    Liu2024,
+    Brandl2020,
+    Chang2025,
+    Forenzo2023,
+    GuttmannFlury2025_MI,
+    HefmiIch2025,
+    Kumar2024,
+    Yang2025,
+    Zhou2020,
 )
-from .datasets import Liu2024
 
 
 class Download:
@@ -36,9 +44,9 @@ class Download:
         set_download_dir(self.data_path)
 
     def run(self):
-        for DatasetCls in self._datasets():
-            dataset = DatasetCls(accept=True) if DatasetCls is Shin2017A else DatasetCls()
-            dataset.get_data(cache_config=dict(path=self.data_path, save_raw=True))
+        for datasetcls in self._datasets():
+            dataset = datasetcls()
+            dataset.download(accept=True)
 
     def _datasets(self):
         yield PhysionetMI
@@ -53,3 +61,11 @@ class Download:
         yield GrosseWentrup2009
         yield Stieger2021
         yield Liu2024
+        yield Chang2025
+        yield Zhou2020
+        yield Brandl2020
+        yield Forenzo2023
+        yield GuttmannFlury2025_MI
+        yield HefmiIch2025
+        yield Kumar2024
+        yield Yang2025
