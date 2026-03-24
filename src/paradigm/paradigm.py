@@ -8,7 +8,7 @@ References
 """
 
 from sklearn.metrics import make_scorer, matthews_corrcoef
-from netcal.metrics import ECE
+from netcal.metrics import ECE, MCE
 from moabb.paradigms import LeftRightImagery
 
 
@@ -18,11 +18,14 @@ class MultiScoreLeftRightImagery(LeftRightImagery):
         return {
             "nll": "neg_log_loss",
             "brier": "neg_brier_score",
-            "acc": "accuracy",
             "auroc": "roc_auc",
             "mcc": make_scorer(matthews_corrcoef, response_method="predict"),
             "ece": make_scorer(self._ece_score, response_method="predict_proba", greater_is_better=False),
+            "mce": make_scorer(self._mce_score, response_method="predict_proba", greater_is_better=False),
         }
 
     def _ece_score(self, y_true, y_prob):
-        return ECE().measure(y_prob, y_true)
+        return ECE(bins=10).measure(y_prob, y_true)
+
+    def _mce_score(self, y_true, y_prob):
+        return MCE(bins=10).measure(y_prob, y_true)
