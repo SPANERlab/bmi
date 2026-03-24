@@ -6,6 +6,7 @@ References
 .. [1] https://docs.python.org/3/library/multiprocessing.html
 """
 
+import shutil
 import numpy as np
 import multiprocessing as mp
 from os import path, makedirs
@@ -54,13 +55,25 @@ def _spawn_worker(target, args):
 
 
 class SubprocessorBase(ClassifierMixin, BaseEstimator):
-    def __init__(self, estimator, root_dir):
+    def __init__(self, estimator, root_dir, save_weights=False):
         self.estimator = estimator
         self.root_dir = root_dir
         self.save_dir = None
+        self.save_weights = save_weights
+
+    def __del__(self):
+        self._cleanup_root_dir()
 
     def __sklearn_is_fitted__(self):
         return True
+
+    def _cleanup_root_dir(self):
+        """Remove fitted model weights across all folds."""
+        if self.save_weights:
+            return
+        filepath = path.join(self.root_dir, self.__class__.__name__)
+        if path.exists(filepath):
+            shutil.rmtree(filepath)
 
     def _make_save_dir(self):
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
