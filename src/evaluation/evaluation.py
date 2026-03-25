@@ -26,6 +26,14 @@ from moabb.datasets import (
     GrosseWentrup2009,
     Stieger2021,
     Liu2024,
+    Brandl2020,
+    Chang2025,
+    Forenzo2023,
+    GuttmannFlury2025_MI,
+    HefmiIch2025,
+    Kumar2024,
+    Yang2025,
+    Zhou2020,
 )
 from .configs import Splits, Sessions, Channels
 from ..paradigm import MultiScoreLeftRightImagery
@@ -99,6 +107,14 @@ class Evaluation:
         yield BNCI2014_004
         yield Dreyer2023
         yield Weibo2014
+        yield Chang2025
+        yield Zhou2020
+        yield Brandl2020
+        yield Forenzo2023
+        yield GuttmannFlury2025_MI
+        yield HefmiIch2025
+        yield Kumar2024
+        yield Yang2025
 
     def _pipelines(self):
         yield CSPLDA
