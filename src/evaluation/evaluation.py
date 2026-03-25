@@ -25,9 +25,9 @@ from moabb.datasets import (
     Weibo2014,
     GrosseWentrup2009,
     Stieger2021,
+    Liu2024,
 )
-from .configs import N_SPLITS, SESSIONS, CHANNELS
-from ..datasets import Liu2024
+from .configs import Splits, Sessions, Channels
 from ..paradigm import MultiScoreLeftRightImagery
 from ..pipelines import CSPLDA, CSPSVM, TSLR, TSSVM, SCNN, DCNN, CSPBLDA, CSPGP, TSBLR, TSGP, BSCNN, BDCNN
 
@@ -41,28 +41,30 @@ class Evaluation:
         set_download_dir(self.data_path)
 
     def run(self):
-        for DatasetCls, PipelineCls in product(self._datasets(), self._pipelines()):
+        for datasetcls, pipelinecls in product(self._datasets(), self._pipelines()):
             # Make directories
             metrics_path = path.join(
                 self.data_path,
                 "metrics",
-                DatasetCls.__name__,
-                PipelineCls.__name__,
+                datasetcls.__name__,
+                pipelinecls.__name__,
             )
+            emissions_path = path.join(metrics_path, "emissions")
             makedirs(metrics_path, exist_ok=True)
+            makedirs(emissions_path, exist_ok=True)
 
             # Configure evaluation
-            dataset = DatasetCls(sessions=SESSIONS[DatasetCls]) if DatasetCls in SESSIONS else DatasetCls()
-            paradigm = MultiScoreLeftRightImagery(resample=128, channels=CHANNELS[DatasetCls])
+            dataset = datasetcls(sessions=Sessions[datasetcls.__name__].value)
+            paradigm = MultiScoreLeftRightImagery(resample=128, channels=Channels[datasetcls.__name__].value)
             evaluation = CrossSubjectEvaluation(
                 datasets=[dataset],
                 paradigm=paradigm,
                 hdf5_path=self.data_path,
                 overwrite=True,
-                n_splits=N_SPLITS[DatasetCls],
+                n_splits=Splits[datasetcls.__name__].value,
                 codecarbon_config=dict(
                     save_to_file=True,
-                    output_dir=metrics_path,
+                    output_dir=emissions_path,
                     log_level="critical",
                     country_iso_code="USA",
                     region="washington",
@@ -71,7 +73,7 @@ class Evaluation:
 
             # Configure pipelines
             X, y, _ = paradigm.get_data(dataset, subjects=[1])
-            pipeline = PipelineCls(
+            pipeline = pipelinecls(
                 data_path=metrics_path,
                 random_state=self.random_state,
                 n_features=X.shape[1],

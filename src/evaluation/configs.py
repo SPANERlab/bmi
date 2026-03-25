@@ -19,7 +19,7 @@ class Splits(Enum):
 class Sessions(Enum):
     BNCI2014_001 = None
     Liu2024 = None
-    Stieger2021 = [1, 2, 3, 4, 5, 6, 7]
+    Stieger2021 = [1, 2, 3, 4, 5, 6]
     PhysionetMI = None
     Lee2019_MI = None
     Cho2017 = None
