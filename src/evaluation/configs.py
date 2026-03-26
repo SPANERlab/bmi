@@ -18,10 +18,10 @@ class Splits(Enum):
     Forenzo2023 = 5
     HefmiIch2025 = 5
     Kumar2024 = 5
+    Zhou2020 = 8
     Chang2025 = 5
     GuttmannFlury2025_MI = 5
     Yang2025 = 10
-    Zhou2020 = 8
 
 
 class Subjects(Enum):
@@ -41,11 +41,10 @@ class Subjects(Enum):
     Forenzo2023 = None
     HefmiIch2025 = None
     Kumar2024 = None
-    Zhou2020 = None
+    Zhou2020 = [13, 14, 15, 16, 17, 18, 19, 20]
     Chang2025 = None
     GuttmannFlury2025_MI = None
     Yang2025 = None
-    Zhou2020 = [13, 14, 15, 16, 17, 18, 19, 20]
 
 
 class Sessions(Enum):
@@ -69,7 +68,6 @@ class Sessions(Enum):
     Chang2025 = None
     GuttmannFlury2025_MI = None
     Yang2025 = None
-    Zhou2020 = None
 
 
 # fmt: off
