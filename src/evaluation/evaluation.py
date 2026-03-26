@@ -35,7 +35,7 @@ from moabb.datasets import (
     Yang2025,
     Zhou2020,
 )
-from .configs import Splits, Sessions, Channels
+from .configs import Splits, Sessions, Channels, Subjects
 from ..paradigm import MultiScoreLeftRightImagery
 from ..pipelines import CSPLDA, CSPSVM, TSLR, TSSVM, SCNN, DCNN, CSPBLDA, CSPGP, TSBLR, TSGP, BSCNN, BDCNN
 
@@ -62,7 +62,10 @@ class Evaluation:
             makedirs(emissions_path, exist_ok=True)
 
             # Configure evaluation
-            dataset = datasetcls(sessions=Sessions[datasetcls.__name__].value)
+            dataset = datasetcls(
+                subjects=Subjects[datasetcls.__name__].value,
+                sessions=Sessions[datasetcls.__name__].value
+            )
             paradigm = MultiScoreLeftRightImagery(resample=128, channels=Channels[datasetcls.__name__].value)
             evaluation = CrossSubjectEvaluation(
                 datasets=[dataset],
