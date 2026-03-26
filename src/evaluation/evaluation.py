@@ -63,8 +63,7 @@ class Evaluation:
 
             # Configure evaluation
             dataset = datasetcls(
-                subjects=Subjects[datasetcls.__name__].value,
-                sessions=Sessions[datasetcls.__name__].value
+                subjects=Subjects[datasetcls.__name__].value, sessions=Sessions[datasetcls.__name__].value
             )
             paradigm = MultiScoreLeftRightImagery(resample=128, channels=Channels[datasetcls.__name__].value)
             evaluation = CrossSubjectEvaluation(
