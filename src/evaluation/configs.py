@@ -18,7 +18,6 @@ class Splits(Enum):
     Forenzo2023 = 5
     HefmiIch2025 = 5
     Kumar2024 = 5
-    Zhou2020 = 5
     Chang2025 = 5
     GuttmannFlury2025_MI = 5
     Yang2025 = 10
