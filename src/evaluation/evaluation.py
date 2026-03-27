@@ -14,20 +14,28 @@ from dotenv import load_dotenv
 from moabb.utils import set_download_dir
 from moabb.evaluations import CrossSubjectEvaluation
 from moabb.datasets import (
-    PhysionetMI,
-    Lee2019_MI,
-    Cho2017,
-    Schirrmeister2017,
-    Shin2017A,
     BNCI2014_001,
     BNCI2014_004,
+    Brandl2020,
+    Chang2025,
+    Cho2017,
     Dreyer2023,
-    Weibo2014,
+    Forenzo2023,
     GrosseWentrup2009,
+    GuttmannFlury2025_MI,
+    HefmiIch2025,
+    Kumar2024,
+    Lee2019_MI,
+    Liu2024,
+    PhysionetMI,
+    Schirrmeister2017,
+    Shin2017A,
     Stieger2021,
+    Weibo2014,
+    Yang2025,
+    Zhou2020,
 )
-from .configs import N_SPLITS, SESSIONS, CHANNELS
-from ..datasets import Liu2024
+from .configs import Splits, Sessions, Channels, Subjects
 from ..paradigm import MultiScoreLeftRightImagery
 from ..pipelines import CSPLDA, CSPSVM, TSLR, TSSVM, SCNN, DCNN, CSPBLDA, CSPGP, TSBLR, TSGP, BSCNN, BDCNN
 
@@ -41,28 +49,32 @@ class Evaluation:
         set_download_dir(self.data_path)
 
     def run(self):
-        for DatasetCls, PipelineCls in product(self._datasets(), self._pipelines()):
+        for datasetcls, pipelinecls in product(self._datasets(), self._pipelines()):
             # Make directories
             metrics_path = path.join(
                 self.data_path,
                 "metrics",
-                DatasetCls.__name__,
-                PipelineCls.__name__,
+                datasetcls.__name__,
+                pipelinecls.__name__,
             )
+            emissions_path = path.join(metrics_path, "emissions")
             makedirs(metrics_path, exist_ok=True)
+            makedirs(emissions_path, exist_ok=True)
 
             # Configure evaluation
-            dataset = DatasetCls(sessions=SESSIONS[DatasetCls]) if DatasetCls in SESSIONS else DatasetCls()
-            paradigm = MultiScoreLeftRightImagery(resample=128, channels=CHANNELS[DatasetCls])
+            dataset = datasetcls(
+                subjects=Subjects[datasetcls.__name__].value, sessions=Sessions[datasetcls.__name__].value
+            )
+            paradigm = MultiScoreLeftRightImagery(resample=128, channels=Channels[datasetcls.__name__].value)
             evaluation = CrossSubjectEvaluation(
                 datasets=[dataset],
                 paradigm=paradigm,
                 hdf5_path=self.data_path,
                 overwrite=True,
-                n_splits=N_SPLITS[DatasetCls],
+                n_splits=Splits[datasetcls.__name__].value,
                 codecarbon_config=dict(
                     save_to_file=True,
-                    output_dir=metrics_path,
+                    output_dir=emissions_path,
                     log_level="critical",
                     country_iso_code="USA",
                     region="washington",
@@ -70,8 +82,11 @@ class Evaluation:
             )
 
             # Configure pipelines
-            X, y, _ = paradigm.get_data(dataset, subjects=[1])
-            pipeline = PipelineCls(
+            subject = 1
+            if Subjects[datasetcls.__name__].value is not None:
+                subject = Subjects[datasetcls.__name__].value[0]
+            X, y, _ = paradigm.get_data(dataset, subjects=[subject])
+            pipeline = pipelinecls(
                 data_path=metrics_path,
                 random_state=self.random_state,
                 n_features=X.shape[1],
@@ -86,17 +101,25 @@ class Evaluation:
 
     def _datasets(self):
         yield BNCI2014_001
-        yield Stieger2021
-        yield Schirrmeister2017
-        yield Liu2024
-        yield GrosseWentrup2009
-        yield PhysionetMI
-        yield Lee2019_MI
-        yield Cho2017
-        yield Shin2017A
         yield BNCI2014_004
+        yield Brandl2020
+        yield Chang2025
+        yield Cho2017
         yield Dreyer2023
+        yield Forenzo2023
+        yield GrosseWentrup2009
+        yield GuttmannFlury2025_MI
+        yield HefmiIch2025
+        yield Kumar2024
+        yield Lee2019_MI
+        yield Liu2024
+        yield PhysionetMI
+        yield Schirrmeister2017
+        yield Shin2017A
+        yield Stieger2021
         yield Weibo2014
+        yield Yang2025
+        yield Zhou2020
 
     def _pipelines(self):
         yield CSPLDA

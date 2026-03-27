@@ -20,6 +20,21 @@ class ModelBuilderBase(ModelBuilder, ClassifierMixin, BaseEstimator):
         self.progressbar = progressbar
         self.random_state = random_state
 
+    def get_params(self, deep=True):
+        return {
+            "model_config": self.model_config,
+            "sampler_config": self.sampler_config,
+            "progressbar": self.progressbar,
+            "random_state": self.random_state,
+        }
+
+    def set_params(self, **params):
+        self.model_config = params.get("model_config", self.model_config)
+        self.sampler_config = params.get("sampler_config", self.sampler_config)
+        self.progressbar = params.get("progressbar", self.progressbar)
+        self.random_state = params.get("random_state", self.random_state)
+        return self
+
     def fit(self, X, y):
         self.classes_ = np.unique(y)
         X_df = pd.DataFrame(X, columns=[f"x{i}" for i in range(X.shape[1])])

@@ -6,10 +6,11 @@ from .subprocessor_base import SubprocessorBase
 
 class PyMCSubprocessor(SubprocessorBase):
     def __del__(self):
-        self._cleanup_disk()
+        super().__del__()
+        self._cleanup_save_dir()
 
-    def _cleanup_disk(self):
-        """Remove data files accessed across subprocesses within folds."""
+    def _cleanup_save_dir(self):
+        """Remove temporary data files within current fold."""
         if self.save_dir is None:
             return
         for filename in ["X.npy", "y.npy"]:

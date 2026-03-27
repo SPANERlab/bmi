@@ -1,17 +1,9 @@
 """
-Cache MOABB database.
-
-References
-----------
-.. [1] https://moabb.neurotechx.com/docs/auto_examples/data_management_and_configuration/plot_changing_download_directory.html
-.. [2] https://moabb.neurotechx.com/docs/auto_examples/data_management_and_configuration/plot_bids_conversion.html
-.. [3] https://moabb.neurotechx.com/docs/paper_results.html#motor-imagery-left-vs-right-hand
-.. [4] https://moabb.neurotechx.com/docs/dataset_summary.html#motor-imagery
+Inspect metadata of left right imagery datasets.
 """
 
-from os import getenv
-from dotenv import load_dotenv
-from moabb.utils import set_download_dir
+import json
+from dataclasses import asdict
 from moabb.datasets import (
     BNCI2014_001,
     BNCI2014_004,
@@ -36,18 +28,13 @@ from moabb.datasets import (
 )
 
 
-class Download:
-    def __init__(self):
-        # Configure download
-        load_dotenv()
-        self.data_path = getenv("DATA_PATH")
-        set_download_dir(self.data_path)
-        self.subject_list = None
-
+class Metadata:
     def run(self):
         for datasetcls in self._datasets():
             dataset = datasetcls()
-            dataset.download(subject_list=self.subject_list, accept=True)
+            metadata = asdict(dataset.metadata)
+            with open(f"{datasetcls.__name__}_metadata.json", "w") as f:
+                json.dump(metadata, f, indent=2)
 
     def _datasets(self):
         yield BNCI2014_001

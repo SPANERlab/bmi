@@ -24,6 +24,16 @@ class BayesianNeuralNetwork(ModelBuilderBase):
         self.network = network
         self.scaler = StandardScaler()
 
+    def get_params(self, deep=True):
+        params = super().get_params(deep=deep)
+        params["network"] = self.network
+        return params
+
+    def set_params(self, **params):
+        self.network = params.pop("network", self.network)
+        super().set_params(**params)
+        return self
+
     def build_model(self, X, y):
         with pm.Model() as self.model:
             X_obs = pm.Data("X_obs", X)
