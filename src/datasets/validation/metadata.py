@@ -3,7 +3,6 @@ Inspect metadata of left right imagery datasets.
 """
 
 import json
-import moabb.datasets as mb
 from dataclasses import asdict
 from moabb.datasets import (
     BNCI2014_001,
