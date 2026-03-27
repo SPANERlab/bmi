@@ -31,6 +31,7 @@ from moabb.datasets import (
 
 class NoDigMixin:
     """Workaround datasets with incomplete digitization."""
+
     def get_data(self, subjects=None):
         data = super().get_data(subjects=subjects)
         for subject in data:
@@ -38,7 +39,7 @@ class NoDigMixin:
                 for _, raw in data[subject][session].items():
                     raw.set_montage(None)
         return data
-    
+
 
 class Chang2025NoDig(NoDigMixin, Chang2025):
     pass

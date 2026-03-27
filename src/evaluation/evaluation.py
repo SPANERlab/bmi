@@ -123,14 +123,14 @@ class Evaluation:
 
     def _pipelines(self):
         yield CSPLDA
-        # yield CSPBLDA
-        # yield CSPSVM
-        # yield CSPGP
-        # yield TSLR
-        # yield TSBLR
-        # yield TSSVM
-        # yield TSGP
-        # yield SCNN
-        # yield BSCNN
-        # yield DCNN
-        # yield BDCNN
+        yield CSPBLDA
+        yield CSPSVM
+        yield CSPGP
+        yield TSLR
+        yield TSBLR
+        yield TSSVM
+        yield TSGP
+        yield SCNN
+        yield BSCNN
+        yield DCNN
+        yield BDCNN
