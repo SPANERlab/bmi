@@ -1,12 +1,5 @@
 """
-Cache MOABB database.
-
-References
-----------
-.. [1] https://moabb.neurotechx.com/docs/auto_examples/data_management_and_configuration/plot_changing_download_directory.html
-.. [2] https://moabb.neurotechx.com/docs/auto_examples/data_management_and_configuration/plot_bids_conversion.html
-.. [3] https://moabb.neurotechx.com/docs/paper_results.html#motor-imagery-left-vs-right-hand
-.. [4] https://moabb.neurotechx.com/docs/dataset_summary.html#motor-imagery
+Convert MOABB datasets to BIDS format.
 """
 
 from os import getenv
@@ -36,29 +29,48 @@ from moabb.datasets import (
 )
 
 
-class Download:
+class NoDigMixin:
+    """Workaround datasets with incomplete digitization."""
+    def get_data(self, subjects=None):
+        data = super().get_data(subjects=subjects)
+        for subject in data:
+            for session in data[subject]:
+                for _, raw in data[subject][session].items():
+                    raw.set_montage(None)
+        return data
+    
+
+class Chang2025NoDig(NoDigMixin, Chang2025):
+    pass
+
+
+class GuttmannFlury2025_MINoDig(NoDigMixin, GuttmannFlury2025_MI):
+    pass
+
+
+class BIDS:
     def __init__(self):
         # Configure download
         load_dotenv()
         self.data_path = getenv("DATA_PATH")
         set_download_dir(self.data_path)
-        self.subject_list = None
+        self.subjects = None
 
     def run(self):
         for datasetcls in self._datasets():
             dataset = datasetcls()
-            dataset.download(subject_list=self.subject_list, accept=True)
+            dataset.convert_to_bids(subjects=self.subjects)
 
     def _datasets(self):
         yield BNCI2014_001
         yield BNCI2014_004
         yield Brandl2020
-        yield Chang2025
+        yield Chang2025NoDig
         yield Cho2017
         yield Dreyer2023
         yield Forenzo2023
         yield GrosseWentrup2009
-        yield GuttmannFlury2025_MI
+        yield GuttmannFlury2025_MINoDig
         yield HefmiIch2025
         yield Kumar2024
         yield Lee2019_MI
