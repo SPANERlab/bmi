@@ -3,7 +3,7 @@ from os import path
 from .subprocessor_base import SubprocessorBase
 
 
-class CuMLSubprocessor(SubprocessorBase):
+class CuMLLogRegSubprocessor(SubprocessorBase):
     def save_fitted_state(self):
         with open(path.join(self.save_dir, "model.pkl"), "wb") as f:
             pickle.dump(self.estimator.model_, f)
