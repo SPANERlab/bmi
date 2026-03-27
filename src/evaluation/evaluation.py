@@ -14,24 +14,24 @@ from dotenv import load_dotenv
 from moabb.utils import set_download_dir
 from moabb.evaluations import CrossSubjectEvaluation
 from moabb.datasets import (
-    PhysionetMI,
-    Lee2019_MI,
-    Cho2017,
-    Schirrmeister2017,
-    Shin2017A,
     BNCI2014_001,
     BNCI2014_004,
-    Dreyer2023,
-    Weibo2014,
-    GrosseWentrup2009,
-    Stieger2021,
-    Liu2024,
     Brandl2020,
     Chang2025,
+    Cho2017,
+    Dreyer2023,
     Forenzo2023,
+    GrosseWentrup2009,
     GuttmannFlury2025_MI,
     HefmiIch2025,
     Kumar2024,
+    Lee2019_MI,
+    Liu2024,
+    PhysionetMI,
+    Schirrmeister2017,
+    Shin2017A,
+    Stieger2021,
+    Weibo2014,
     Yang2025,
     Zhou2020,
 )
@@ -82,7 +82,10 @@ class Evaluation:
             )
 
             # Configure pipelines
-            X, y, _ = paradigm.get_data(dataset, subjects=[1])
+            subject = 1
+            if Subjects[datasetcls.__name__].value is not None:
+                subject = Subjects[datasetcls.__name__].value[0]
+            X, y, _ = paradigm.get_data(dataset, subjects=[subject])
             pipeline = pipelinecls(
                 data_path=metrics_path,
                 random_state=self.random_state,
@@ -98,36 +101,36 @@ class Evaluation:
 
     def _datasets(self):
         yield BNCI2014_001
-        yield Stieger2021
-        yield Schirrmeister2017
-        yield Liu2024
-        yield GrosseWentrup2009
-        yield PhysionetMI
-        yield Lee2019_MI
-        yield Cho2017
-        yield Shin2017A
         yield BNCI2014_004
-        yield Dreyer2023
-        yield Weibo2014
-        yield Chang2025
-        yield Zhou2020
         yield Brandl2020
+        yield Chang2025
+        yield Cho2017
+        yield Dreyer2023
         yield Forenzo2023
+        yield GrosseWentrup2009
         yield GuttmannFlury2025_MI
         yield HefmiIch2025
         yield Kumar2024
+        yield Lee2019_MI
+        yield Liu2024
+        yield PhysionetMI
+        yield Schirrmeister2017
+        yield Shin2017A
+        yield Stieger2021
+        yield Weibo2014
         yield Yang2025
+        yield Zhou2020
 
     def _pipelines(self):
         yield CSPLDA
-        yield CSPBLDA
-        yield CSPSVM
-        yield CSPGP
-        yield TSLR
-        yield TSBLR
-        yield TSSVM
-        yield TSGP
-        yield SCNN
-        yield BSCNN
-        yield DCNN
-        yield BDCNN
+        # yield CSPBLDA
+        # yield CSPSVM
+        # yield CSPGP
+        # yield TSLR
+        # yield TSBLR
+        # yield TSSVM
+        # yield TSGP
+        # yield SCNN
+        # yield BSCNN
+        # yield DCNN
+        # yield BDCNN
