@@ -93,7 +93,7 @@ class Evaluation:
                     use=True,
                     save_array=True,
                     overwrite_array=False,
-                )
+                ),
             )
             pipeline = pipelinecls(
                 data_path=metrics_path,
