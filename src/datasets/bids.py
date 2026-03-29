@@ -30,9 +30,8 @@ from moabb.datasets import (
 
 
 class NoDigMixin:
-    """Workaround datasets with incomplete digitization."""
-
     def get_data(self, subjects=None):
+        """Workaround datasets with incomplete digitization."""
         data = super().get_data(subjects=subjects)
         for subject in data:
             for session in data[subject]:
