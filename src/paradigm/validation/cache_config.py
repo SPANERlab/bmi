@@ -53,11 +53,7 @@ class CacheConfig:
             )
             paradigm.get_data(
                 dataset,
-                cache_config=dict(
-                    use=True,
-                    save_array=True,
-                    overwrite_array=False
-                ),
+                cache_config=dict(use=True, save_array=True, overwrite_array=False),
             )
 
     def _datasets(self):

@@ -38,7 +38,8 @@ class BubblePlot:
     def run(self):
         fig = plot_datasets_cluster(
             datasets=[
-                dict(zip(self.KEYS, row)) for row in [
+                dict(zip(self.KEYS, row))
+                for row in [
                     (BNCI2014_001.__name__, "imagery", 9, 2, 2592, 4.0),
                     (BNCI2014_004.__name__, "imagery", 9, 5, 6520, 4.5),
                     (Brandl2020.__name__, "imagery", 16, 1, 8058, 4.5),

@@ -38,21 +38,12 @@ class Shape:
     def run(self):
         for datasetcls in self._datasets():
             dataset = datasetcls(
-                subjects=Subjects[datasetcls.__name__].value,
-                sessions=Sessions[datasetcls.__name__].value
+                subjects=Subjects[datasetcls.__name__].value, sessions=Sessions[datasetcls.__name__].value
             )
-            paradigm = MultiScoreLeftRightImagery(
-                resample=128,
-                channels=Channels[datasetcls.__name__].value
-            )
+            paradigm = MultiScoreLeftRightImagery(resample=128, channels=Channels[datasetcls.__name__].value)
 
             X, y, metadata = paradigm.get_data(
-                dataset,
-                cache_config=dict(
-                    use=True,
-                    save_array=True,
-                    overwrite_array=False
-                )
+                dataset, cache_config=dict(use=True, save_array=True, overwrite_array=False)
             )
             info = {
                 "X_shape": list(X.shape),
