@@ -7,7 +7,6 @@ References
 .. [2] https://moabb.neurotechx.com/docs/auto_examples/advanced_examples/plot_select_electrodes_resample.html
 """
 
-import numpy as np
 from os import path, getenv, makedirs
 from itertools import product
 from dotenv import load_dotenv
@@ -72,6 +71,11 @@ class Evaluation:
                 hdf5_path=self.data_path,
                 overwrite=True,
                 n_splits=Splits[datasetcls.__name__].value,
+                cache_config=dict(
+                    use=True,
+                    save_array=True,
+                    overwrite_array=False,
+                ),
                 codecarbon_config=dict(
                     save_to_file=True,
                     output_dir=emissions_path,
@@ -82,15 +86,19 @@ class Evaluation:
             )
 
             # Configure pipelines
-            subject = 1
-            if Subjects[datasetcls.__name__].value is not None:
-                subject = Subjects[datasetcls.__name__].value[0]
-            X, y, _ = paradigm.get_data(dataset, subjects=[subject])
+            X, _, _ = paradigm.get_data(
+                dataset,
+                cache_config=dict(
+                    use=True,
+                    save_array=True,
+                    overwrite_array=False,
+                ),
+            )
             pipeline = pipelinecls(
                 data_path=metrics_path,
                 random_state=self.random_state,
                 n_features=X.shape[1],
-                n_classes=len(np.unique(y)),
+                n_classes=2,
                 n_timepoints=X.shape[2],
             )
             pipelines = pipeline.build()

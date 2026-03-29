@@ -1,4 +1,3 @@
-from .cuml import LogisticRegression, SVC
 from .neural_network import ShallowConvNet, DeepConvNet
 from .model_builder import (
     BayesianLogisticRegression,
@@ -10,7 +9,6 @@ from .model_builder import (
 from .subprocess import (
     PyMCSubprocessor,
     PyTorchSubprocessor,
-    CuMLSubprocessor,
     SklearnSubprocessor,
     BNNPyMCSubprocessor,
     BNNPyTorchSubprocessor,
@@ -18,8 +16,6 @@ from .subprocess import (
 )
 
 __all__ = [
-    LogisticRegression.__name__,
-    SVC.__name__,
     ShallowConvNet.__name__,
     DeepConvNet.__name__,
     BayesianLogisticRegression.__name__,
@@ -29,7 +25,6 @@ __all__ = [
     BayesianNeuralNetwork.__name__,
     PyMCSubprocessor.__name__,
     PyTorchSubprocessor.__name__,
-    CuMLSubprocessor.__name__,
     SklearnSubprocessor.__name__,
     BNNPyMCSubprocessor.__name__,
     BNNPyTorchSubprocessor.__name__,
