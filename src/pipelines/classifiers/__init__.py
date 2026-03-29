@@ -10,8 +10,6 @@ from .model_builder import (
 from .subprocess import (
     PyMCSubprocessor,
     PyTorchSubprocessor,
-    CuMLLogRegSubprocessor,
-    CuMLSVCSubprocessor,
     SklearnSubprocessor,
     BNNPyMCSubprocessor,
     BNNPyTorchSubprocessor,
@@ -30,8 +28,6 @@ __all__ = [
     BayesianNeuralNetwork.__name__,
     PyMCSubprocessor.__name__,
     PyTorchSubprocessor.__name__,
-    CuMLLogRegSubprocessor.__name__,
-    CuMLSVCSubprocessor.__name__,
     SklearnSubprocessor.__name__,
     BNNPyMCSubprocessor.__name__,
     BNNPyTorchSubprocessor.__name__,
