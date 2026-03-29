@@ -16,8 +16,6 @@ from .subprocess import (
 )
 
 __all__ = [
-    LogisticRegression.__name__,
-    SVC.__name__,
     ShallowConvNet.__name__,
     DeepConvNet.__name__,
     BayesianLogisticRegression.__name__,

@@ -7,7 +7,6 @@ References
 .. [2] https://moabb.neurotechx.com/docs/auto_examples/advanced_examples/plot_select_electrodes_resample.html
 """
 
-import numpy as np
 from os import path, getenv, makedirs
 from itertools import product
 from dotenv import load_dotenv
