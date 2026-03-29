@@ -10,7 +10,7 @@ References
 from os import path, getenv, makedirs
 from itertools import product
 from dotenv import load_dotenv
-from moabb.utils import set_download_dir
+from moabb.utils import set_download_dir, setup_seed
 from moabb.evaluations import CrossSubjectEvaluation
 from moabb.datasets import (
     BNCI2014_001,
@@ -45,6 +45,7 @@ class Evaluation:
         load_dotenv()
         self.random_state = int(getenv("RANDOM_STATE"))
         self.data_path = getenv("DATA_PATH")
+        setup_seed(self.random_state)
         set_download_dir(self.data_path)
 
     def run(self):
