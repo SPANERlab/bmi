@@ -144,6 +144,9 @@ install.packages("tidyverse")
 # Save renv
 renv::snapshot()
 
+# Run script
+source("path/to/software")
+
 # Exit R shell
 q()
 
