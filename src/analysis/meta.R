@@ -105,9 +105,25 @@ fit <- function(
   # Measure prediction interval
   print(predict(model))
 
-  # Robust variance estimation
-  print(conf_int(model, vcov = "CR2"))
-  print(coef_test(model, vcov = "CR2"))
+  # Sensitivity analysis
+  rhos <- c(0.2, 0.4, 0.6, 0.8)
+  for (rho in rhos) {
+    # Correlated and hierarchical effects modeling
+    v <- with(df, impute_covariance_matrix(vi = vi, cluster = dataset, r = rho))
+    che_model <- rma.mv(
+      yi = yi,
+      V = v,
+      random = ~ 1 | dataset / pipeline_family,
+      data = df,
+      test = "t",
+      method = "REML",
+      sparse = TRUE
+    )
+
+    # Robust variance estimation
+    print(conf_int(che_model, vcov = "CR2"))
+    print(coef_test(che_model, vcov = "CR2"))
+  }
 }
 
 fit_mods <- function(
@@ -139,18 +155,35 @@ fit_mods <- function(
   # Measure prediction interval
   print(predict(model, newmods = 0))
 
-  # Robust variance estimation
-  print(conf_int(model, vcov = "CR2"))
-  print(coef_test(model, vcov = "CR2"))
+  # Sensitivity analysis
+  rhos <- c(0.2, 0.4, 0.6, 0.8)
+  for (rho in rhos) {
+    # Correlated and hierarchical effects modeling
+    v <- with(df, impute_covariance_matrix(vi = vi, cluster = dataset, r = rho))
+    che_model <- rma.mv(
+      yi = yi,
+      V = v,
+      random = ~ 1 | dataset / pipeline_family,
+      mods = ~ scale(samples),
+      data = df,
+      test = "t",
+      method = "REML",
+      sparse = TRUE
+    )
 
-  # Bootstrap 3-level meta-analysis
-  constraints <- constrain_zero(2, coefs = coef(model))
-  cw_boot <- Wald_test_cwb(
-    full_model = model,
-    constraints = constraints,
-    adjust = "CR2",
-    R = 2000,
-    seed = as.integer(Sys.getenv("RANDOM_STATE"))
-  )
-  print(cw_boot)
+    # Robust variance estimation
+    print(conf_int(che_model, vcov = "CR2"))
+    print(coef_test(che_model, vcov = "CR2"))
+
+    # Bootstrap 3-level meta-analysis
+    constraints <- constrain_zero(2, coefs = coef(che_model))
+    cw_boot <- Wald_test_cwb(
+      full_model = che_model,
+      constraints = constraints,
+      adjust = "CR2",
+      R = 2000,
+      seed = as.integer(Sys.getenv("RANDOM_STATE"))
+    )
+    print(cw_boot)
+  }
 }
