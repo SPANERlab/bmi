@@ -142,6 +142,7 @@ dependencies:
       - docstring-inheritance==3.0.0
       - donfig==0.8.1.post1
       - dotenv==0.9.9
+      - duckdb==1.5.2
       - edfio==0.4.12
       - edflib-python==1.0.8
       - einops==0.8.2
