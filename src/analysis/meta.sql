@@ -1,9 +1,9 @@
 SELECT
     dataset,
     CASE
-        WHEN pipeline_freq IN ('CSPLDA', 'CSPSVM') THEN 'raw_signal'
-        WHEN pipeline_freq IN ('TSLR', 'TSSVM') THEN 'riemannian'
-        WHEN pipeline_freq IN ('SCNN', 'DCNN') THEN 'deep_learning'
+        WHEN pipeline_freq IN ('CSPLDA', 'CSPSVM') THEN 'RAW'
+        WHEN pipeline_freq IN ('TSLR', 'TSSVM') THEN 'RIE'
+        WHEN pipeline_freq IN ('SCNN', 'DCNN') THEN 'DL'
     END AS pipeline_family,
     ANY_VALUE(samples) AS samples,
     ANY_VALUE(samples_test) AS samples_test,

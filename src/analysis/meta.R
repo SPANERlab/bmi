@@ -26,12 +26,16 @@ run <- function() {
   metrics <- c("score_auroc", "score_mcc", "score_nll", "score_brier", "score_ece", "score_mce")
   for (metric in metrics) {
     # Fit 3-level meta-analysis
-    output <- capture.output(fit(metric = metric))
-    writeLines(output, paste0("results_", metric, ".txt"))
+    output_dir <- file.path("output", metric, "intercept")
+    dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+    output <- capture.output(fit(metric = metric, output_dir = output_dir))
+    writeLines(output, file.path(output_dir, "results.txt"))
 
     # Fit 3-level meta-analysis with moderator
-    output <- capture.output(fit_mods(metric = metric))
-    writeLines(output, paste0("results_mods_", metric, ".txt"))
+    output_dir <- file.path("output", metric, "moderator")
+    dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+    output <- capture.output(fit_mods(metric = metric, output_dir = output_dir))
+    writeLines(output, file.path(output_dir, "results.txt"))
   }
 }
 
@@ -79,7 +83,8 @@ meta <- function(
 
 fit <- function(
   meta_file = here("meta.csv"),
-  metric = "score_auroc"
+  metric,
+  output_dir
 ) {
   # Fit 3-level meta-analysis
   df <- read.csv(meta_file)
@@ -94,6 +99,20 @@ fit <- function(
     method = "REML"
   )
   print(summary(model))
+
+  # Save forest plot
+  plot_path <- file.path(output_dir, "forest.png")
+  png(plot_path, width = 3000, height = 2400, res = 300)
+  forest(
+    model,
+    slab = paste(df$dataset, df$pipeline_family, sep = " / "),
+    xlab = paste0("Effect Size: ", toupper(metric)),
+    header = c("Study / Pipeline", "Estimate [95% CI]"),
+    refline = 0,
+    annotate = TRUE,
+    order = "obs"
+  )
+  dev.off()
 
   # Compute variance across levels
   print(var.comp(model))
@@ -123,12 +142,29 @@ fit <- function(
     # Robust variance estimation
     print(conf_int(che_model, vcov = "CR2"))
     print(coef_test(che_model, vcov = "CR2"))
+
+    # Save forest plot
+    plots_dir <- file.path(output_dir, "rve")
+    dir.create(plots_dir, recursive = TRUE, showWarnings = FALSE)
+    plot_path <- file.path(plots_dir, paste0("forest_rho_", rho, ".png"))
+    png(plot_path, width = 3000, height = 2400, res = 300)
+    forest(
+      che_model,
+      slab = paste(df$dataset, df$pipeline_family, sep = " / "),
+      xlab = paste0("Effect Size: ", toupper(metric), " (rho=", rho, ")"),
+      header = c("Study / Pipeline", "Estimate [95% CI]"),
+      refline = 0,
+      annotate = TRUE,
+      order = "obs"
+    )
+    dev.off()
   }
 }
 
 fit_mods <- function(
   meta_file = here("meta.csv"),
-  metric = "score_auroc"
+  metric,
+  output_dir
 ) {
   # Fit 3-level meta-analysis
   df <- read.csv(meta_file)
@@ -144,6 +180,20 @@ fit_mods <- function(
     method = "REML"
   )
   print(summary(model))
+
+  # Save forest plot
+  plot_path <- file.path(output_dir, "forest.png")
+  png(plot_path, width = 3000, height = 2400, res = 300)
+  forest(
+    model,
+    slab = paste(df$dataset, df$pipeline_family, sep = " / "),
+    xlab = paste0("Effect Size: ", toupper(metric)),
+    header = c("Study / Pipeline", "Estimate [95% CI]"),
+    refline = 0,
+    annotate = TRUE,
+    order = "obs"
+  )
+  dev.off()
 
   # Compute variance across levels
   print(var.comp(model))
@@ -175,6 +225,22 @@ fit_mods <- function(
     print(conf_int(che_model, vcov = "CR2"))
     print(coef_test(che_model, vcov = "CR2"))
 
+    # Save forest plot
+    plots_dir <- file.path(output_dir, "rve")
+    dir.create(plots_dir, recursive = TRUE, showWarnings = FALSE)
+    plot_path <- file.path(plots_dir, paste0("forest_rho_", rho, ".png"))
+    png(plot_path, width = 3000, height = 2400, res = 300)
+    forest(
+      che_model,
+      slab = paste(df$dataset, df$pipeline_family, sep = " / "),
+      xlab = paste0("Effect Size: ", toupper(metric), " (rho=", rho, ")"),
+      header = c("Study / Pipeline", "Estimate [95% CI]"),
+      refline = 0,
+      annotate = TRUE,
+      order = "obs"
+    )
+    dev.off()
+
     # Bootstrap 3-level meta-analysis
     constraints <- constrain_zero(2, coefs = coef(che_model))
     cw_boot <- Wald_test_cwb(
@@ -185,5 +251,21 @@ fit_mods <- function(
       seed = as.integer(Sys.getenv("RANDOM_STATE"))
     )
     print(cw_boot)
+
+    # Save forest plot
+    plots_dir <- file.path(output_dir, "cwb")
+    dir.create(plots_dir, recursive = TRUE, showWarnings = FALSE)
+    plot_path <- file.path(plots_dir, paste0("forest_rho_", rho, ".png"))
+    png(plot_path, width = 3000, height = 2400, res = 300)
+    forest(
+      che_model,
+      slab = paste(df$dataset, df$pipeline_family, sep = " / "),
+      xlab = paste0("Effect Size: ", toupper(metric), " (rho=", rho, ")"),
+      header = c("Study / Pipeline", "Estimate [95% CI]"),
+      refline = 0,
+      annotate = TRUE,
+      order = "obs"
+    )
+    dev.off()
   }
 }
