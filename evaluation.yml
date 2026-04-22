@@ -108,10 +108,12 @@ dependencies:
       - cachetools==7.0.0
       - certifi==2026.1.4
       - cffi==2.0.0
+      - chardet==7.4.3
       - charset-normalizer==3.4.4
       - click==8.3.1
       - cloudpickle==3.1.2
       - codecarbon==3.2.2
+      - colorama==0.4.6
       - colorcet==3.1.0
       - colt5-attention==0.11.1
       - cons==0.4.7
@@ -137,6 +139,7 @@ dependencies:
       - datashader==0.18.2
       - decorator==5.2.1
       - defusedxml==0.7.1
+      - diff-cover==10.2.0
       - distributed==2025.9.2
       - distributed-ucxx-cu12==0.47.0
       - docstring-inheritance==3.0.0
@@ -268,6 +271,7 @@ dependencies:
       - param==2.3.1
       - parso==0.8.5
       - partd==1.4.2
+      - pathspec==1.0.4
       - pexpect==4.9.0
       - pillow==12.1.0
       - pipdeptree==2.30.0
@@ -320,6 +324,7 @@ dependencies:
       - rapids-dask-dependency==25.12.1
       - rapids-logger==0.2.3
       - referencing==0.37.0
+      - regex==2026.4.4
       - requests==2.32.5
       - rfc3339-validator==0.1.4
       - rfc3986-validator==0.1.1
@@ -343,6 +348,7 @@ dependencies:
       - sortedcontainers==2.4.0
       - soundfile==0.13.1
       - soupsieve==2.8.3
+      - sqlfluff==4.1.0
       - stack-data==0.6.3
       - sympy==1.13.1
       - tabulate==0.9.0
