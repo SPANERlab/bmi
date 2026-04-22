@@ -1,7 +1,7 @@
 SELECT
     dataset,
-    pipeline_freq AS freq,
-    pipeline_bayes AS bayes,
+    freq,
+    bayes,
     ROUND(score_nll, 3) AS nll,
     ROUND(score_brier, 3) AS bs,
     ROUND(score_auroc, 3) AS auroc,
