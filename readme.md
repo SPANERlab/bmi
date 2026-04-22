@@ -167,14 +167,8 @@ lintr::lint_dir("/path/to/software")
 ### File format & linting
 
 ```bash
-# Format files
-sqlfluff format /path/to/software
-
-# Fail if files not formatted
-sqlfluff format --check /path/to/software
-
 # Lint files
-sqlfluff fix /path/to/software
+sqlfluff format /path/to/software
 
 # Fail if files not linted
 sqlfluff lint /path/to/software
