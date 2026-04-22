@@ -21,7 +21,12 @@ class Query:
             Path.cwd() / "agg_worst.csv",
         )
         yield (
-            Path(__file__).parent / "agg_metrics.sql",
+            Path(__file__).parent / "agg_metrics_pipeline.sql",
             Path.cwd() / "agg_worst.csv",
-            Path.cwd() / "agg_metrics.csv",
+            Path.cwd() / "agg_metrics_pipeline.csv",
+        )
+        yield (
+            Path(__file__).parent / "agg_metrics_dataset.sql",
+            Path.cwd() / "agg_worst.csv",
+            Path.cwd() / "agg_metrics_dataset.csv",
         )
