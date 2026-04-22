@@ -54,14 +54,14 @@ avg <- function(
 }
 
 diff <- function(
-  agg_file = here("avg.csv"),
+  avg_file = here("avg.csv"),
   sql_file = here("src/analysis/diff.sql"),
   output_file = here("diff.csv")
 ) {
   con <- dbConnect(duckdb())
   on.exit(dbDisconnect(con), add = TRUE)
 
-  query <- glue(readLines(sql_file) |> paste(collapse = "\n"), agg_file = agg_file)
+  query <- glue(readLines(sql_file) |> paste(collapse = "\n"), avg_file = avg_file)
   dbGetQuery(con, query) |> write_csv(output_file)
 
   output_file
@@ -75,7 +75,7 @@ meta <- function(
   con <- dbConnect(duckdb())
   on.exit(dbDisconnect(con), add = TRUE)
 
-  query <- glue(readLines(sql_file) |> paste(collapse = "\n"), diff_file = diff_file, metric = metric)
+  query <- glue(readLines(sql_file) |> paste(collapse = "\n"), diff_file = diff_file)
   dbGetQuery(con, query) |> write_csv(output_file)
 
   output_file

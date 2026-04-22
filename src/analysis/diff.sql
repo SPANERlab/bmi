@@ -21,6 +21,6 @@ SELECT
     b.score_ece - f.score_ece AS score_ece,
     b.score_mce - f.score_mce AS score_mce
 FROM pairs p
-JOIN read_csv_auto('{agg_file}') f ON f.pipeline = p.freq
-JOIN read_csv_auto('{agg_file}') b ON b.pipeline = p.bayes AND b.dataset = f.dataset
+JOIN read_csv_auto('{avg_file}') f ON f.pipeline = p.freq
+JOIN read_csv_auto('{avg_file}') b ON b.pipeline = p.bayes AND b.dataset = f.dataset
 ORDER BY dataset, pipeline_freq
