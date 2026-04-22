@@ -11,6 +11,7 @@ SELECT
         AS bin_040_050,
     SUM(CASE WHEN score_mce >= 0.5 AND score_mce < 0.6 THEN 1 ELSE 0 END)
         AS bin_050_060,
-    SUM(CASE WHEN score_mce >= 0.6 AND score_mce < 0.7 THEN 1 ELSE 0 END) AS bin_060_070
+    SUM(CASE WHEN score_mce >= 0.6 AND score_mce < 0.7 THEN 1 ELSE 0 END)
+        AS bin_060_070
 FROM READ_CSV_AUTO('{input_file}')
 WHERE pipeline IN ('CSPBLDA', 'CSPGP', 'TSBLR', 'TSGP', 'BSCNN', 'BDCNN')
