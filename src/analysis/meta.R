@@ -93,7 +93,7 @@ fit <- function(
   model <- rma.mv(
     yi = yi,
     V = vi,
-    random = ~ 1 | dataset / pipeline_family,
+    random = ~ 1 | dataset / family,
     data = df,
     test = "t",
     method = "REML"
@@ -105,7 +105,7 @@ fit <- function(
   png(plot_path, width = 3000, height = 2400, res = 300)
   forest(
     model,
-    slab = paste(df$dataset, df$pipeline_family, sep = " / "),
+    slab = paste(df$dataset, df$family, sep = " / "),
     xlab = paste0("Effect Size: ", toupper(metric)),
     header = c("Study / Pipeline", "Estimate [95% CI]"),
     refline = 0,
@@ -132,7 +132,7 @@ fit <- function(
     che_model <- rma.mv(
       yi = yi,
       V = v,
-      random = ~ 1 | dataset / pipeline_family,
+      random = ~ 1 | dataset / family,
       data = df,
       test = "t",
       method = "REML",
@@ -150,7 +150,7 @@ fit <- function(
     png(plot_path, width = 3000, height = 2400, res = 300)
     forest(
       che_model,
-      slab = paste(df$dataset, df$pipeline_family, sep = " / "),
+      slab = paste(df$dataset, df$family, sep = " / "),
       xlab = paste0("Effect Size: ", toupper(metric), " (rho=", rho, ")"),
       header = c("Study / Pipeline", "Estimate [95% CI]"),
       refline = 0,
@@ -173,7 +173,7 @@ fit_mods <- function(
   model <- rma.mv(
     yi = yi,
     V = vi,
-    random = ~ 1 | dataset / pipeline_family,
+    random = ~ 1 | dataset / family,
     mods = ~ scale(samples),
     data = df,
     test = "t",
@@ -186,7 +186,7 @@ fit_mods <- function(
   png(plot_path, width = 3000, height = 2400, res = 300)
   forest(
     model,
-    slab = paste(df$dataset, df$pipeline_family, sep = " / "),
+    slab = paste(df$dataset, df$family, sep = " / "),
     xlab = paste0("Effect Size: ", toupper(metric)),
     header = c("Study / Pipeline", "Estimate [95% CI]"),
     refline = 0,
@@ -213,7 +213,7 @@ fit_mods <- function(
     che_model <- rma.mv(
       yi = yi,
       V = v,
-      random = ~ 1 | dataset / pipeline_family,
+      random = ~ 1 | dataset / family,
       mods = ~ scale(samples),
       data = df,
       test = "t",
@@ -232,7 +232,7 @@ fit_mods <- function(
     png(plot_path, width = 3000, height = 2400, res = 300)
     forest(
       che_model,
-      slab = paste(df$dataset, df$pipeline_family, sep = " / "),
+      slab = paste(df$dataset, df$family, sep = " / "),
       xlab = paste0("Effect Size: ", toupper(metric), " (rho=", rho, ")"),
       header = c("Study / Pipeline", "Estimate [95% CI]"),
       refline = 0,
@@ -259,7 +259,7 @@ fit_mods <- function(
     png(plot_path, width = 3000, height = 2400, res = 300)
     forest(
       che_model,
-      slab = paste(df$dataset, df$pipeline_family, sep = " / "),
+      slab = paste(df$dataset, df$family, sep = " / "),
       xlab = paste0("Effect Size: ", toupper(metric), " (rho=", rho, ")"),
       header = c("Study / Pipeline", "Estimate [95% CI]"),
       refline = 0,

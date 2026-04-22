@@ -6,5 +6,5 @@ SELECT
     SUM(CASE WHEN score_mcc >= 0.3 AND score_mcc < 0.4 THEN 1 ELSE 0 END) AS bin_03_04,
     SUM(CASE WHEN score_mcc >= 0.4 AND score_mcc < 0.5 THEN 1 ELSE 0 END) AS bin_04_05,
     SUM(CASE WHEN score_mcc >= 0.5 AND score_mcc < 0.6 THEN 1 ELSE 0 END) AS bin_05_06
-FROM read_csv_auto('{input_file}')
+FROM READ_CSV_AUTO('{input_file}')
 WHERE pipeline IN ('CSPLDA', 'CSPSVM', 'TSLR', 'TSSVM', 'SCNN', 'DCNN')

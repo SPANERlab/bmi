@@ -3,3 +3,12 @@ line-length = 110
 
 [tool.ruff.lint]
 ignore = ["E501"]
+
+[tool.sqlfluff.core]
+dialect = "ansi"
+templater = "jinja"
+max_line_length = 88
+
+[tool.sqlfluff.indendation]
+indent_unit = "space"
+tab_space_size = 4
