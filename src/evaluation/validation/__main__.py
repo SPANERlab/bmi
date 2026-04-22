@@ -1,6 +1,6 @@
 from .trace import Trace
-from .aggregate import Aggregate
+from .query import Query
 
 if __name__ == "__main__":
     Trace().run()
-    Aggregate().run()
+    Query().run()
