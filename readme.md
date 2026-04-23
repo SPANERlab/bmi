@@ -145,7 +145,7 @@ install.packages("tidyverse")
 renv::snapshot()
 
 # Run script
-source("path/to/software")
+source("/path/to/software")
 
 # Exit R shell
 q()
@@ -160,4 +160,16 @@ renv::restore()
 # Within R shell
 styler::style_dir("/path/to/software")
 lintr::lint_dir("/path/to/software")
+```
+
+## SQL Guide
+
+### File format & linting
+
+```bash
+# Lint files
+sqlfluff format /path/to/software
+
+# Fail if files not linted
+sqlfluff lint /path/to/software
 ```
