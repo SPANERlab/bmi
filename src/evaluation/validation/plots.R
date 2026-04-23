@@ -43,7 +43,7 @@ pipeline_ess_tail <- function() {
     geom_segment(aes(x = p05, xend = p95, yend = pipeline)) +
     geom_point() +
     geom_vline(xintercept = 400, linetype = "dashed") +
-    labs(x = "Bulk ESS", y = "Pipeline", title = "Pipeline P05/P50/P95 Interval Plot: Tail ESS") +
+    labs(x = "Tail ESS", y = "Pipeline", title = "Pipeline P05/P50/P95 Interval Plot: Tail ESS") +
     theme_minimal() +
     theme(plot.title = element_text(hjust = 0.5))
 
@@ -61,7 +61,7 @@ pipeline_mcse_mean <- function() {
   p <- ggplot(df, aes(x = median, y = reorder(pipeline, median))) +
     geom_segment(aes(x = p05, xend = p95, yend = pipeline)) +
     geom_point() +
-    labs(x = "Bulk ESS", y = "Pipeline", title = "Pipeline P05/P50/P95 Interval Plot: Mean MCSE") +
+    labs(x = "Mean MCSE", y = "Pipeline", title = "Pipeline P05/P50/P95 Interval Plot: Mean MCSE") +
     theme_minimal() +
     theme(plot.title = element_text(hjust = 0.5))
 
@@ -79,7 +79,7 @@ pipeline_mcse_std <- function() {
   p <- ggplot(df, aes(x = median, y = reorder(pipeline, median))) +
     geom_segment(aes(x = p05, xend = p95, yend = pipeline)) +
     geom_point() +
-    labs(x = "Bulk ESS", y = "Pipeline", title = "Pipeline P05/P50/P95 Interval Plot: Std. MCSE") +
+    labs(x = "Std. MCSE", y = "Pipeline", title = "Pipeline P05/P50/P95 Interval Plot: Std. MCSE") +
     theme_minimal() +
     theme(plot.title = element_text(hjust = 0.5))
 
@@ -135,7 +135,7 @@ dataset_mcse_mean <- function() {
   p <- ggplot(df, aes(x = median, y = reorder(dataset, median))) +
     geom_segment(aes(x = p05, xend = p95, yend = dataset)) +
     geom_point() +
-    labs(x = "MCSE Mean", y = "Dataset", title = "Dataset P05/P50/P95 Interval Plot: MCSE Mean") +
+    labs(x = "Mean MCSE", y = "Dataset", title = "Dataset P05/P50/P95 Interval Plot: Mean MCSE") +
     theme_minimal() +
     theme(plot.title = element_text(hjust = 0.5))
 
@@ -153,7 +153,7 @@ dataset_mcse_std <- function() {
   p <- ggplot(df, aes(x = median, y = reorder(dataset, median))) +
     geom_segment(aes(x = p05, xend = p95, yend = dataset)) +
     geom_point() +
-    labs(x = "MCSE Std.", y = "Dataset", title = "Dataset P05/P50/P95 Interval Plot: MCSE Std.") +
+    labs(x = "Std. MCSE", y = "Dataset", title = "Dataset P05/P50/P95 Interval Plot: Std. MCSE") +
     theme_minimal() +
     theme(plot.title = element_text(hjust = 0.5))
 
