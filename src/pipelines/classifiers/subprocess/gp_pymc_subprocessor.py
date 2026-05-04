@@ -4,6 +4,9 @@ from .pymc_subprocessor import PyMCSubprocessor
 
 
 class GPPyMCSubprocessor(PyMCSubprocessor):
+    def __init__(self, estimator, root_dir, save_weights=False):
+        super().__init__(estimator, root_dir, save_weights)
+
     def _build_model(self, X, y):
         Xu = np.load(path.join(self.save_dir, "Xu.npy"))
         self.estimator.build_model(X, y, Xu)

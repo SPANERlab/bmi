@@ -4,6 +4,9 @@ from .subprocessor_base import SubprocessorBase
 
 
 class SklearnSubprocessor(SubprocessorBase):
+    def __init__(self, estimator, root_dir, save_weights=False):
+        super().__init__(estimator, root_dir, save_weights)
+
     def save_fitted_state(self):
         with open(path.join(self.save_dir, "model.pkl"), "wb") as f:
             pickle.dump(self.estimator, f)

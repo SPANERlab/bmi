@@ -5,6 +5,9 @@ from .pymc_subprocessor import PyMCSubprocessor
 
 
 class BNNPyMCSubprocessor(PyMCSubprocessor):
+    def __init__(self, estimator, root_dir, save_weights=False):
+        super().__init__(estimator, root_dir, save_weights)
+
     def save_fitted_state(self):
         joblib.dump(self.estimator.scaler, path.join(self.save_dir, "scaler.pkl"))
         np.save(path.join(self.save_dir, "network_save_dir.npy"), np.array([self.estimator.network.save_dir]))

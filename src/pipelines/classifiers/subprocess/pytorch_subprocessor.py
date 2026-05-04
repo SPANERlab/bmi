@@ -3,6 +3,9 @@ from .subprocessor_base import SubprocessorBase
 
 
 class PyTorchSubprocessor(SubprocessorBase):
+    def __init__(self, estimator, root_dir, save_weights=False):
+        super().__init__(estimator, root_dir, save_weights)
+
     def save_fitted_state(self):
         self.estimator.model_.save_params(
             f_params=path.join(self.save_dir, "params.pt"),

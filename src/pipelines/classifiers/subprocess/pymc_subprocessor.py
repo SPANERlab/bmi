@@ -5,6 +5,9 @@ from .subprocessor_base import SubprocessorBase
 
 
 class PyMCSubprocessor(SubprocessorBase):
+    def __init__(self, estimator, root_dir, save_weights=False):
+        super().__init__(estimator, root_dir, save_weights)
+
     def __del__(self):
         super().__del__()
         self._cleanup_save_dir()

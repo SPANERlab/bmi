@@ -1,13 +1,13 @@
 SELECT
     dataset,
     CASE
-        WHEN pipeline_freq IN ('CSPLDA', 'CSPSVM') THEN 'CSP'
-        WHEN pipeline_freq IN ('TSLR', 'TSSVM') THEN 'TS'
-        WHEN pipeline_freq IN ('SCNN', 'DCNN') THEN 'CNN'
-    END AS pipeline_family,
+        WHEN freq IN ('CSPLDA', 'CSPSVM') THEN 'RAW'
+        WHEN freq IN ('TSLR', 'TSSVM') THEN 'RIE'
+        WHEN freq IN ('SCNN', 'DCNN') THEN 'DL'
+    END AS family,
     ANY_VALUE(samples) AS samples,
     ANY_VALUE(samples_test) AS samples_test,
-    AVG(time) AS time,
+    AVG(duration) AS duration,
     AVG(carbon_emission) AS carbon_emission,
     AVG(score_auroc) AS yi_score_auroc,
     VAR_SAMP(score_auroc) / COUNT(*) AS vi_score_auroc,
@@ -21,6 +21,6 @@ SELECT
     VAR_SAMP(score_ece) / COUNT(*) AS vi_score_ece,
     AVG(score_mce) AS yi_score_mce,
     VAR_SAMP(score_mce) / COUNT(*) AS vi_score_mce
-FROM read_csv_auto('{diff_file}')
-GROUP BY dataset, pipeline_family
-ORDER BY dataset, pipeline_family
+FROM READ_CSV_AUTO('{diff_file}')
+GROUP BY dataset, family
+ORDER BY dataset, family
