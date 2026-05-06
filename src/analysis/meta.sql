@@ -4,7 +4,7 @@ SELECT
         WHEN freq IN ('CSPLDA', 'CSPSVM') THEN 'RAW'
         WHEN freq IN ('TSLR', 'TSSVM') THEN 'RIE'
         WHEN freq IN ('SCNN', 'DCNN') THEN 'DL'
-    END AS family,
+    END AS pipeline_family,
     ANY_VALUE(samples) AS samples,
     ANY_VALUE(samples_test) AS samples_test,
     AVG(duration) AS duration,
@@ -22,5 +22,5 @@ SELECT
     AVG(score_mce) AS yi_score_mce,
     VAR_SAMP(score_mce) / COUNT(*) AS vi_score_mce
 FROM READ_CSV_AUTO('{diff_file}')
-GROUP BY dataset, family
-ORDER BY dataset, family
+GROUP BY dataset, pipeline_family
+ORDER BY dataset, pipeline_family
