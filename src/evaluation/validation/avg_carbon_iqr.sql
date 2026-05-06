@@ -141,21 +141,21 @@ bounds AS (
 SELECT
     b.pipeline,
 
-    ROUND(b.b.duration_p25, 3) AS duration_p25,
-    ROUND(b.b.duration_p50, 3) AS duration_p50,
-    ROUND(b.b.duration_p75, 3) AS duration_p75,
-    ROUND(b.b.duration_lower_fence, 3) AS duration_lower_fence,
-    ROUND(b.b.duration_upper_fence, 3) AS duration_upper_fence,
+    ROUND(b.duration_p25, 3) AS duration_p25,
+    ROUND(b.duration_p50, 3) AS duration_p50,
+    ROUND(b.duration_p75, 3) AS duration_p75,
+    ROUND(b.duration_lower_fence, 3) AS duration_lower_fence,
+    ROUND(b.duration_upper_fence, 3) AS duration_upper_fence,
     COUNT(CASE WHEN a.duration < b.duration_lower_fence THEN 1 END)
         AS duration_outliers_low,
     COUNT(CASE WHEN a.duration > b.duration_upper_fence THEN 1 END)
         AS duration_outliers_high,
 
-    ROUND(b.b.emissions_p25, 3) AS emissions_p25,
-    ROUND(b.b.emissions_p50, 3) AS emissions_p50,
-    ROUND(b.b.emissions_p75, 3) AS emissions_p75,
-    ROUND(b.b.emissions_lower_fence, 3) AS emissions_lower_fence,
-    ROUND(b.b.emissions_upper_fence, 3) AS emissions_upper_fence,
+    ROUND(b.emissions_p25, 3) AS emissions_p25,
+    ROUND(b.emissions_p50, 3) AS emissions_p50,
+    ROUND(b.emissions_p75, 3) AS emissions_p75,
+    ROUND(b.emissions_lower_fence, 3) AS emissions_lower_fence,
+    ROUND(b.emissions_upper_fence, 3) AS emissions_upper_fence,
     COUNT(CASE WHEN a.emissions < b.emissions_lower_fence THEN 1 END)
         AS emissions_outliers_low,
     COUNT(CASE WHEN a.emissions > b.emissions_upper_fence THEN 1 END)
