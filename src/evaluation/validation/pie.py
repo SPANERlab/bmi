@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 class PieCharts:
     def run(self):
         for sizes, title, filepath in self._params():
-            labels = "CPU", "GPU", "RAM"
+            labels = ["CPU", "GPU", "RAM"]
             colors = ["tab:gray", "tab:olive", "tab:cyan"]
             fig, ax = plt.subplots()
             ax.pie(sizes, labels=labels, autopct="%1.2f%%", textprops=dict(fontsize=12), colors=colors)
