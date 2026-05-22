@@ -34,8 +34,8 @@ from moabb.datasets import (
     Yang2025,
     Zhou2020,
 )
-from .configs import Splits, Sessions, Channels, Subjects
-from ..paradigm import MultiScoreLeftRightImagery
+from moabb.paradigms import LeftRightImagery
+from .configs import Sessions, Channels, Subjects
 from ..pipelines import CSPLDA, CSPSVM, TSLR, TSSVM, SCNN, DCNN, CSPBLDA, CSPGP, TSBLR, TSGP, BSCNN, BDCNN
 
 
@@ -65,13 +65,16 @@ class Evaluation:
             dataset = datasetcls(
                 subjects=Subjects[datasetcls.__name__].value, sessions=Sessions[datasetcls.__name__].value
             )
-            paradigm = MultiScoreLeftRightImagery(resample=128, channels=Channels[datasetcls.__name__].value)
+            paradigm = LeftRightImagery(resample=128, channels=Channels[datasetcls.__name__].value)
             evaluation = CrossSubjectEvaluation(
                 datasets=[dataset],
                 paradigm=paradigm,
                 hdf5_path=self.data_path,
-                overwrite=True,
-                n_splits=Splits[datasetcls.__name__].value,
+                save_predictions=True,
+                overwrite=False,
+                n_splits=len(Subjects[datasetcls.__name__].value)
+                if Subjects[datasetcls.__name__].value
+                else min(dataset.metadata.participants.n_subjects, 10),
                 cache_config=dict(
                     use=True,
                     save_array=True,

@@ -1,29 +1,6 @@
 from enum import Enum
 
 
-class Splits(Enum):
-    BNCI2014_001 = 9
-    BNCI2014_004 = 9
-    Brandl2020 = 5
-    Chang2025 = 5
-    Cho2017 = 10
-    Dreyer2023 = 10
-    Forenzo2023 = 5
-    GrosseWentrup2009 = 5
-    GuttmannFlury2025_MI = 5
-    HefmiIch2025 = 5
-    Kumar2024 = 5
-    Lee2019_MI = 10
-    Liu2024 = 10
-    PhysionetMI = 10
-    Schirrmeister2017 = 5
-    Shin2017A = 5
-    Stieger2021 = 10
-    Weibo2014 = 5
-    Yang2025 = 10
-    Zhou2020 = 8
-
-
 class Subjects(Enum):
     BNCI2014_001 = None
     BNCI2014_004 = None
