@@ -4,7 +4,7 @@ from .pymc_subprocessor import PyMCSubprocessor
 
 
 class GPPyMCSubprocessor(PyMCSubprocessor):
-    def __init__(self, estimator, root_dir, save_weights=False):
+    def __init__(self, estimator, root_dir, save_weights=True):
         super().__init__(estimator, root_dir, save_weights)
 
     def _build_model(self, X, y):

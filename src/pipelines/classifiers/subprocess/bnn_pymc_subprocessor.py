@@ -5,7 +5,7 @@ from .pymc_subprocessor import PyMCSubprocessor
 
 
 class BNNPyMCSubprocessor(PyMCSubprocessor):
-    def __init__(self, estimator, root_dir, save_weights=False):
+    def __init__(self, estimator, root_dir, save_weights=True):
         super().__init__(estimator, root_dir, save_weights)
 
     def save_fitted_state(self):
