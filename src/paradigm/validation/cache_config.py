@@ -31,7 +31,7 @@ from moabb.datasets import (
     Yang2025,
     Zhou2020,
 )
-from ..paradigm import MultiScoreLeftRightImagery
+from moabb.paradigms import LeftRightImagery
 from ...evaluation.configs import Subjects, Sessions, Channels
 
 
@@ -47,7 +47,7 @@ class CacheConfig:
                 subjects=Subjects[datasetcls.__name__].value,
                 sessions=Sessions[datasetcls.__name__].value,
             )
-            paradigm = MultiScoreLeftRightImagery(
+            paradigm = LeftRightImagery(
                 resample=128,
                 channels=Channels[datasetcls.__name__].value,
             )
