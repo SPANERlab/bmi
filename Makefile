@@ -1,6 +1,6 @@
 H5 := data/predictions.h5
 
-.PHONY: all download evaluate metrics stats ma diagnostics carbon clean \
+.PHONY: all download evaluate metrics stats smd ma diagnostics carbon clean \
 	check check-python check-r check-sql \
 	fix fix-python fix-r fix-sql
 
@@ -22,6 +22,11 @@ data/ma.csv: src/analysis/metrics-to-stats.sql data/metrics.csv
 
 stats: data/ma.csv
 
+data/smd.csv: src/analysis/metrics-to-smd.sql data/metrics.csv
+	duckdb -csv -c ".read src/analysis/metrics-to-smd.sql" > data/smd.csv
+
+smd: data/smd.csv
+
 ma: data/ma.csv
 	Rscript src/analysis/ma.R
 
@@ -32,7 +37,7 @@ carbon:
 	duckdb -csv -c ".read src/analysis/carbon.sql" > data/carbon_summary.csv
 
 clean:
-	rm -f data/predictions.csv data/metrics.csv data/ma.csv
+	rm -f data/predictions.csv data/metrics.csv data/ma.csv data/smd.csv
 
 check: check-python check-r check-sql
 
